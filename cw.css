@@ -1,0 +1,53 @@
+div#crossword {
+	position: absolute;
+	z-index: -1;
+	background-color: black;
+	float: left;
+}
+
+div.word {
+	position: absolute;
+}
+
+div.darken {
+	font-weight: bold;
+}
+
+div#information {
+	position: absolute;
+	z-index: -10;
+	float: right;
+	left: 330px;
+}
+
+div#clues {
+	clear: both;
+	position:relative;
+	top: 330px;
+}
+
+div {
+	background-color: white;
+	font-family: arial;
+	font-size: 0.9em;
+}
+
+input {
+	position: absolute;
+	width: 29px;
+	height: 29px;
+	border: 1px solid;
+	text-align: center;
+}
+
+input.highlight {
+	position: absolute;
+	background-color: orange;
+}
+
+span {
+	z-index: 999;
+	position: absolute;
+	font-family: arial;
+	font-size: 0.7em;
+}
