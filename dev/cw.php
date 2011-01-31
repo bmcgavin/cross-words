@@ -132,7 +132,7 @@ EOF;
 			}
 		}
 		$output .= <<< EOF
-		<input maxlength="1" type="text" id="{$id}" class="active" style="top:{$clue_top}px; left:{$clue_left}px;" onclick="highlightWord('{$clue}', '{$letter}');"></input>
+		<input maxlength="1" type="text" id="{$id}" class="active" style="top:{$clue_top}px; left:{$clue_left}px;" onfocus="highlightWord('{$clue}', '{$letter}');"></input>
 
 EOF;
 	}
