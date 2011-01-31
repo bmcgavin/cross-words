@@ -32,9 +32,19 @@ var inputBind = function(event)
 		if (intersections[CrosswordData.active_letter]) {
 			$("input#"+intersections[CrosswordData.active_letter]).val('');
 		}
+		alert(letter);
+		alert(words_in_clue[CrosswordData.active_word]);
 		if (letter > 1) {
 			letter--;
 			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), words_in_clue[CrosswordData.active_word])
+		} else if (letter == 1 && words_in_clue[CrosswordData.active_word].length > 1) {
+			alert("Old word");
+			$(words_in_clue[CrosswordData.active_word]).each(function (key, word) {
+				if (word != CrosswordData.active_word) {
+					moveTo(word+"-"+lengths[word], CrosswordData.active_word);
+					return false;
+				}
+			});
 		}
 	} else {
 		$("input#"+CrosswordData.active_letter).val(get_letter(event.which));
@@ -47,8 +57,16 @@ var inputBind = function(event)
 		if (letter < lengths[CrosswordData.active_word]) {
 			letter++;
 			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), words_in_clue[CrosswordData.active_word]);
+		} else if (letter == lengths[CrosswordData.active_word] && words_in_clue[CrosswordData.active_word].length > 1) {
+			$(words_in_clue[CrosswordData.active_word]).each(function (key, word) {
+				if (word != CrosswordData.active_word) {
+					moveTo(word+"-1", CrosswordData.active_word);
+					return false;
+				}
+			});
 		}
-	}	
+	}
+	return false;
 }
 
 var words = {};
@@ -144,6 +162,7 @@ function moveTo(new_letter, old_word) {
 	$("input#"+new_letter).focus();
 	split_letter = new_letter.split('-');
 	word = split_letter[0]+"-"+split_letter[1];
+	CrosswordData.active_letter = new_letter;
 	if (word != old_word) {
 		//$("div#information").html(//$("div#information").html()+new Date().getTime()+":HLT"+word+"/"+split_letter[2]+"<br/>");
 		clearAllExcept([word]);
@@ -180,7 +199,7 @@ function highlightWord(word, letter) {
 		}
 	}
 	//search through all of words_in_clue to see if this word is in any others
-	//TODO Make this more efficient.
+	//TODO Make this a jQ method call so it can be incorporated into the backspace multi-word function above.
 	for (tmp in words_in_clue) {
 		if (typeof(words_in_clue[tmp]) != 'undefined') {
 			if (tmp != word && words_in_clue[tmp].length > 1) {
