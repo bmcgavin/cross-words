@@ -191,13 +191,16 @@ function highlightWord(word, letter) {
 	split_word = word.split('-');
 	
 	clearAllExcept(words_in_clue[word]);
+	clue = "";
 	for (tmp in words_in_clue[word]) {
 		if (typeof(words_in_clue[word][tmp]) != 'undefined') {
 			//alert(words[word]);
 			$("div#"+words_in_clue[word][tmp]+".word input").addClass("highlight").css("z-index","99");
 			$("div#"+words_in_clue[word][tmp]+"-clue").addClass("darken");
+			clue += $("div#"+words_in_clue[word][tmp]+"-clue").html()+"\n</br>";
 		}
 	}
+	$("div#active-clue").html(clue);
 	//search through all of words_in_clue to see if this word is in any others
 	//TODO Make this a jQ method call so it can be incorporated into the backspace multi-word function above.
 	for (tmp in words_in_clue) {

@@ -1,4 +1,22 @@
+div.right {
+	float: right;
+	width: 40%;
+	z-index: -100;
+}
 
+div#across {
+	float: left;
+	width: 40%;
+}
+
+div#down {
+	float: right;
+	width: 40%;
+}
+
+div#buttons {
+	width: 100%;
+}
 
 div#crossword {
 	position: absolute;

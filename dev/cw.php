@@ -192,10 +192,21 @@ $output = <<< EOF
 {$scripts}
 	</head>
 	<body>
+		<div id="panel" class="right">
+			<div id="active-clue">
+			</div>
+		</div>
 		<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
 {$output}
 		</div>
-		<div id="information" class="right" style="left:{$width}px;">
+		<div id="information" class="bottom" style="top:{$height}px;">
+			<br/>
+			<div id="buttons">
+				<button id="cheat" name="cheat" value="cheat" onClick="processOne('cheat');">Cheat</button>
+				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
+				<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
+				<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
+			</div>
 			<div id="across">
 				<h3>Across</h3>
 {$across}
@@ -204,10 +215,6 @@ $output = <<< EOF
 				<h3>Down</h3>
 {$down}
 			</div>
-			<button id="cheat" name="cheat" value="cheat" onClick="processOne('cheat');">Cheat</button>
-			<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
-			<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
-			<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
 		</div>
 	</body>
 </html>
