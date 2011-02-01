@@ -197,6 +197,7 @@ $output = <<< EOF
 	<body>
 		<div id="panel" class="right">
 			<div id="active-clue">
+				&nbsp;
 			</div>
 			<div id="buttons">
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('cheat');">Cheat</button>
