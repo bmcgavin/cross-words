@@ -24,7 +24,7 @@ div#crossword {
 }
 
 div.word {
-	position: relative;
+	position: absolute;
 }
 
 div.darken {
