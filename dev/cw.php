@@ -6,6 +6,7 @@ I need a 2D array to be drawn on screen out of divs with IDs of the clue
 */
 
 define("SQUARE_SIZE", 29);
+$sq = SQUARE_SIZE;
 
 $ini = str_replace(".php", ".ini", basename($_SERVER['SCRIPT_NAME']));
 if (!file_exists($ini)) {
@@ -175,7 +176,7 @@ $scripts = <<< EOF
 		CrosswordData.RIGHT = 39;
 		CrosswordData.UP = 38;
 		CrosswordData.DOWN = 40;
-		$("div#panel").css("width", document.width - {$width});
+		$("div#panel").css("width", document.width - {$sq} - {$width});
 	});
 	</script>
 
@@ -197,18 +198,17 @@ $output = <<< EOF
 		<div id="panel" class="right">
 			<div id="active-clue">
 			</div>
-		</div>
-		<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
-{$output}
-		</div>
-		<div id="information" class="bottom" style="top:{$height}px;">
-			<br/>
 			<div id="buttons">
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('cheat');">Cheat</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
 			</div>
+		</div>
+		<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
+{$output}
+		</div>
+		<div id="information" class="bottom" style="top:{$height}px;">
 			<div id="across">
 				<h3>Across</h3>
 {$across}
