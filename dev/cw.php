@@ -7,7 +7,7 @@ I need a 2D array to be drawn on screen out of divs with IDs of the clue
 
 define("SQUARE_SIZE", 29);
 $sq = SQUARE_SIZE;
-
+print_r($_SERVER);
 $ini = str_replace(".php", ".ini", basename($_SERVER['SCRIPT_NAME']));
 if (!file_exists($ini)) {
 	if (isset($argv)) {
@@ -19,7 +19,7 @@ if (!file_exists($ini)) {
 		echo "Bad variable";
 		exit;			
 	} else if ($test[1] == 'latest') {
-		$cws = scandir("./ini/", 1);
+		$cws = scandir(dirname($_SERVER['SCRIPT_NAME'])."/ini/", 1);
 		print_r($cws);
 		exit;
 	} else if (!preg_match("/^[0-9]+$/", $test[1])) {
