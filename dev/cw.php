@@ -19,6 +19,7 @@ if (!file_exists($ini)) {
 		echo "Bad variable";
 		exit;			
 	} else if ($test[1] == 'latest') {
+		echo "HERE";
 		$cws = scandir(dirname($_SERVER['SCRIPT_NAME'])."/ini/", 1);
 		print_r($cws);
 		exit;
