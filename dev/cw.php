@@ -188,7 +188,7 @@ $output = <<< EOF
 		<title>
 			Experimental CW Generator
 		</title>
-		<link rel="stylesheet" type="text/css" href="cw.css" />
+		<link rel="stylesheet" type="text/css" href="cw.css"></link>
 		<script type="text/javascript" src="jquery-1.4.2.js"></script>
 		<script type="text/javascript" src="cw.js"></script>
 {$scripts}

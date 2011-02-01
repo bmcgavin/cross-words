@@ -19,10 +19,8 @@ div#buttons {
 }
 
 div#crossword {
-	position: absolute;
-	z-index: -1;
+	z-index: 0;
 	background-color: black;
-	float: left;
 }
 
 div.word {
