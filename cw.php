@@ -7,25 +7,19 @@ I need a 2D array to be drawn on screen out of divs with IDs of the clue
 
 define("SQUARE_SIZE", 29);
 $sq = SQUARE_SIZE;
-print_r($_SERVER);
+
 $ini = str_replace(".php", ".ini", basename($_SERVER['SCRIPT_NAME']));
 if (!file_exists($ini)) {
 	if (isset($argv)) {
 		$test = array($argv[1], $argv[2]);
+		$_GET = array('cw' => $argv[1].'-'.$argv[2]);
 	} else {
 		$test = preg_split('/-/', $_GET['cw']);
 	}
 	if ($test[0] != 'quick' && $test[0] != 'cryptic' && $test[0] != 'hc') {
 		echo "Bad variable";
 		exit;			
-	} else if ($test[1] == 'latest') {
-		echo "HERE";
-		$path = dirname($_SERVER['SCRIPT_FILENAME'])."/ini/";
-		echo $path;
-		$cws = scandir($path, 1);
-		print_r($cws);
-		exit;
-	} else if (!preg_match("/^[0-9]+$/", $test[1])) {
+	} else if ($test[1] != 'latest' && !preg_match("/^[0-9]+$/", $test[1])) {
 		echo "Bad variable";
 		exit;
 	}
