@@ -18,14 +18,7 @@ if (!file_exists($ini)) {
 	if ($test[0] != 'quick' && $test[0] != 'cryptic' && $test[0] != 'hc') {
 		echo "Bad variable";
 		exit;			
-	} else if ($test[1] == 'latest') {
-		echo "HERE";
-		$path = dirname($_SERVER['SCRIPT_FILENAME'])."/ini/";
-		echo $path;
-		$cws = scandir($path, 1);
-		print_r($cws);
-		exit;
-	} else if (!preg_match("/^[0-9]+$/", $test[1])) {
+	} else if ($test[1] != 'latest' && !preg_match("/^[0-9]+$/", $test[1])) {
 		echo "Bad variable";
 		exit;
 	}
