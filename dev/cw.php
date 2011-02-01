@@ -158,6 +158,9 @@ EOF;
 	}
 }
 
+$width =SQUARE_SIZE * ($max_x);
+$height=SQUARE_SIZE * ($max_y);
+
 $scripts = <<< EOF
 	<script type="text/javascript">
 	{$intersections}
@@ -172,13 +175,12 @@ $scripts = <<< EOF
 		CrosswordData.RIGHT = 39;
 		CrosswordData.UP = 38;
 		CrosswordData.DOWN = 40;
+		$("div#panel").css("width", document.width - {$width});
 	});
 	</script>
 
 EOF;
 
-$width =SQUARE_SIZE * ($max_x);
-$height=SQUARE_SIZE * ($max_y);
 $output = <<< EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
