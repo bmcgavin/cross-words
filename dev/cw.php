@@ -10,19 +10,21 @@ $sq = SQUARE_SIZE;
 
 $ini = str_replace(".php", ".ini", basename($_SERVER['SCRIPT_NAME']));
 if (!file_exists($ini)) {
-	$test = preg_split('/-/', $_GET['cw']);
-	if ((
-		$test[0] != 'quick' && $test[0] != 'cryptic' && $test[0] != 'hc'
-		)) {
-		if ($test[1] == 'latest') {
-			$cws = scandir('ini/', 1);
-			print_r($cws);
-			exit;
-		} else if (!preg_match("/^[0-9]+$/", $test[1])
-		)) {
-			echo "Bad variable";
-			exit;
-		}
+	if (isset($argv)) {
+		$test = array($argv[1], $argv[2]);
+	} else {
+		$test = preg_split('/-/', $_GET['cw']);
+	}
+	if ($test[0] != 'quick' && $test[0] != 'cryptic' && $test[0] != 'hc') {
+		echo "Bad variable";
+		exit;			
+	} else if ($test[1] == 'latest') {
+		$cws = scandir("./ini/", 1);
+		print_r($cws);
+		exit;
+	} else if (!preg_match("/^[0-9]+$/", $test[1])) {
+		echo "Bad variable";
+		exit;
 	}
 	$ini = "ini/".$_GET['cw'].'.ini';
 }
