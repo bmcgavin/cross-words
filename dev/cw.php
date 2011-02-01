@@ -18,7 +18,7 @@ if (!file_exists($ini)) {
 		echo "Bad variable";
 		exit;
 	}
-	$ini = $_GET['cw'].'.ini';
+	$ini = "ini/".$_GET['cw'].'.ini';
 }
 
 
