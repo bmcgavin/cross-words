@@ -20,7 +20,7 @@ if (!file_exists($ini)) {
 		exit;			
 	} else if ($test[1] == 'latest') {
 		echo "HERE";
-		$path = dirname($_SERVER['SCRIPT_NAME'])."/ini/";
+		$path = dirname($_SERVER['SCRIPT_FILENAME'])."/ini/";
 		echo $path;
 		$cws = scandir($path, 1);
 		print_r($cws);
