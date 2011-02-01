@@ -13,11 +13,16 @@ if (!file_exists($ini)) {
 	$test = preg_split('/-/', $_GET['cw']);
 	if ((
 		$test[0] != 'quick' && $test[0] != 'cryptic' && $test[0] != 'hc'
-		) || (
-		!preg_match("/^[0-9]+$/", $test[1])
 		)) {
-		echo "Bad variable";
-		exit;
+		if ($test[1] == 'latest') {
+			$cws = scandir('ini/', 1);
+			print_r($cws);
+			exit;
+		} else if (!preg_match("/^[0-9]+$/", $test[1])
+		)) {
+			echo "Bad variable";
+			exit;
+		}
 	}
 	$ini = "ini/".$_GET['cw'].'.ini';
 }
