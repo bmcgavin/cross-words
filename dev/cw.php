@@ -20,7 +20,9 @@ if (!file_exists($ini)) {
 		exit;			
 	} else if ($test[1] == 'latest') {
 		echo "HERE";
-		$cws = scandir(dirname($_SERVER['SCRIPT_NAME'])."/ini/", 1);
+		$path = dirname($_SERVER['SCRIPT_NAME'])."/ini/";
+		echo $path;
+		$cws = scandir($path, 1);
 		print_r($cws);
 		exit;
 	} else if (!preg_match("/^[0-9]+$/", $test[1])) {
