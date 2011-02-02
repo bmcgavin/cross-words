@@ -87,7 +87,7 @@ foreach($crossword as $clue => $data) {
 	}
 
 	$extra = "";
-	if (!array_key_exists($clue, $already_done) && array_key_exists('extra', $data)) {
+	if (array_key_exists('extra', $data)) {
 		$prexes = preg_split('/,/', $data['extra']);
 		foreach($prexes as $prex) {
 			$extra = ", '".$prex."'";
