@@ -9,8 +9,8 @@
 <?PHP
 	$rand = rand(9100,11000);
 ?>
-		<iframe src="cw.php?cw=quick-latest"></iframe>
-		<iframe src="cw.php?cw=quick-<?=$rand?>"></iframe>
+		<iframe src="cw.php?cw=quick-latest" width="100%" height="100%"></iframe>
+		<iframe src="cw.php?cw=quick-<?=$rand?>" width="100%" height="100%"></iframe>
 		
 	</body>
 </html>
