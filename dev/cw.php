@@ -75,8 +75,6 @@ foreach($crossword as $clue => $data) {
 			$traversed += $word_length;
 			$data['word_boundaries'][] = $traversed;
 		}
-		print_r($data['word_boundaries']);
-		exit;
 	}
 	if (array_key_exists('solution', $data)) {
 		//try to speed up the solutions / check all buttons
@@ -123,8 +121,8 @@ EOF;
 		$letter = $i+1;
 		$class = "active";
 		if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries'])) {
-			$clue .= " end-".$dir;
 			
+			$class .= " end-".$dir;
 		}
 		$id = $clue."-".$letter;
 		$clue_top = 0;
