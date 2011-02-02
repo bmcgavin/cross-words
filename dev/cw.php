@@ -117,12 +117,16 @@ foreach($crossword as $clue => $data) {
 	<div class="word" id="{$clue}" style="top: {$top}px; left:{$left}px; height:{$height}px; width:{$width}px;">
 	
 EOF;
+	$done = false;
 	for($i = 0; $i < $length; $i++) {
 		$letter = $i+1;
 		$class = "active";
-		if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries'])) {
+		if (array_key_exists('word_boundaries', $data) {
 			
-			$class .= " end-".$dir;
+			if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
+				$class .= " end-".$dir;
+			}
+			$done = print_r($data['word_boundaries']);
 		}
 		$id = $clue."-".$letter;
 		$clue_top = 0;
@@ -159,6 +163,7 @@ EOF;
 
 EOF;
 	}
+	if ($done) exit;
 	$output .= <<< EOF
 	</div>
 
