@@ -166,7 +166,6 @@ EOF;
 
 EOF;
 	}
-	if ($done) exit;
 	$output .= <<< EOF
 	</div>
 
