@@ -199,14 +199,15 @@ $output = <<< EOF
 	</head>
 	<body>
 		<div id="panel" class="right">
-			<div id="active-clue">
-				&nbsp;
-			</div>
 			<div id="buttons">
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('cheat');">Cheat</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
+				<button id="store" name="store" value="store" onClick="store();">Store</button>
+			</div>
+			<div id="active-clue">
+				&nbsp;
 			</div>
 		</div>
 		<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">

@@ -13,6 +13,12 @@ CrosswordData.splitWordAndGetLetter = function() {
 	return tmp[2];
 }
 
+function store() {
+	//store a cookie if there isn't already one
+	//check the crossword
+	//submit an ajax request to flag this cookie as having completed this crossword
+	
+}
  
 var inputBind = function(event) 
 {
@@ -32,8 +38,6 @@ var inputBind = function(event)
 		if (intersections[CrosswordData.active_letter]) {
 			$("input#"+intersections[CrosswordData.active_letter]).val('');
 		}
-		alert(letter);
-		alert(words_in_clue[CrosswordData.active_word]);
 		if (letter > 1) {
 			letter--;
 			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), words_in_clue[CrosswordData.active_word])
@@ -93,6 +97,7 @@ function processOne(how) {
 }
 
 function processAll(how) {
+	$("#information").html(new Date().getTime());
 	if (typeof(CrosswordData.active_word) != 'undefined') {
 		old_active_word = CrosswordData.active_word;
 		for(solution in solutions) {
@@ -102,6 +107,7 @@ function processAll(how) {
 		}
 		CrosswordData.active_word = old_active_word;
 	}
+	$("#information").append(new Date().getTime());
 }
 
 function getSpace(from, direction) {
