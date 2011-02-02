@@ -68,8 +68,13 @@ foreach($crossword as $clue => $data) {
 	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
 	//get the words length from the clue
 	if (preg_match("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
-		print_r($word_lengths);
-		exit;
+		$data['word_boundaries'] = array();
+		$word_lengths = preg_split("/,/", $word_lengths[1]);
+		$traversed = 0;
+		foreach($word_lengths as $word_length) {
+			$traversed += $word_length;
+			$data['word_boundaries'][] = $traversed;
+		}		
 	}
 	if (array_key_exists('solution', $data)) {
 		//try to speed up the solutions / check all buttons
@@ -114,6 +119,11 @@ foreach($crossword as $clue => $data) {
 EOF;
 	for($i = 0; $i < $length; $i++) {
 		$letter = $i+1;
+		$class = "active";
+		if ($array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries'])) {
+			$clue .= " end-".$dir;
+			
+		}
 		$id = $clue."-".$letter;
 		$clue_top = 0;
 		$clue_left = 0;
@@ -145,7 +155,7 @@ EOF;
 			}
 		}
 		$output .= <<< EOF
-		<input maxlength="1" type="text" id="{$id}" class="active" style="top:{$clue_top}px; left:{$clue_left}px;" onfocus="highlightWord('{$clue}', '{$letter}');"></input>
+		<input maxlength="1" type="text" id="{$id}" class="{$class}" style="top:{$clue_top}px; left:{$clue_left}px;" onfocus="highlightWord('{$clue}', '{$letter}');"></input>
 
 EOF;
 	}
