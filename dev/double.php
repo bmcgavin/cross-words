@@ -18,6 +18,7 @@
 	}
 	if (!array_key_exists($type, $rand)) {
 		echo "Bad type";
+		exit;
 	}
 	$rand = $rand[$type];
 	while (!file_exists("ini/{$type}-{$rand}.ini")) {
