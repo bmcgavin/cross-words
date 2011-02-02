@@ -101,11 +101,11 @@ function processAll(how) {
 	$("#active-clue").html(start + " - ");
 	if (typeof(CrosswordData.active_word) != 'undefined') {
 		old_active_word = CrosswordData.active_word;
-		for(solution in solutions) {
+		$(solutions).each(function(key, solution) {
 			solution_split = solution.split('-');
 			CrosswordData.active_word = solution_split[0]+"-"+solution_split[1];
 			processOne(how);
-		}
+		});
 		CrosswordData.active_word = old_active_word;
 	}
 	end = new Date().getTime();
