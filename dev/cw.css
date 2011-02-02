@@ -25,6 +25,10 @@ div#crossword {
 	border-bottom: 1px solid;
 }
 
+div#active-clue {
+	font-size: 1.2em;
+}
+
 div.word {
 	position: absolute;
 }
@@ -66,15 +70,15 @@ input {
 input.highlight {
 	position: absolute;
 	background-color: orange;
-	z-index: 1000;
+	z-index: 100;
 }
 
 input.end-across {
-	border-right: 2px solid;
+	width: 27px;
 }
 
 input.end-down {
-	border-bottom: 2px solid;
+	height: 27px;
 }
 
 
