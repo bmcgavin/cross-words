@@ -121,10 +121,8 @@ EOF;
 	for($i = 0; $i < $length; $i++) {
 		$letter = $i+1;
 		$class = "active";
-		if (array_key_exists('word_boundaries', $data)) {
-			if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
-				$class .= " end-".$dir;
-			}
+		if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
+			$class .= " end-".$dir;
 		}
 		$id = $clue."-".$letter;
 		$clue_top = 0;
@@ -225,7 +223,7 @@ $output = <<< EOF
 				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
-				<button id="store" name="store" value="store" onClick="store();">Store</button>
+				<!--<button id="store" name="store" value="store" onClick="store();">Store</button>-->
 			</div>
 			<div id="active-clue">
 				&nbsp;
