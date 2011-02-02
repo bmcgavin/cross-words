@@ -66,6 +66,11 @@ foreach($crossword as $clue => $data) {
 		$length += $tmp;
 	}
 	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
+	//get the words length from the clue
+	if (preg_match("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths) {
+		print_r($word_lengths);
+		exit;
+	}
 	if (array_key_exists('solution', $data)) {
 		//try to speed up the solutions / check all buttons
 		/*
@@ -77,10 +82,11 @@ foreach($crossword as $clue => $data) {
 	}
 
 	$extra = "";
-	if (array_key_exists('extra', $data)) {
+	if (!array_key_exists($clue, $already_done) && array_key_exists('extra', $data)) {
 		$prexes = preg_split('/,/', $data['extra']);
 		foreach($prexes as $prex) {
 			$extra = ", '".$prex."'";
+				
 		}
 	}
 	$words_in_clue .= "words_in_clue[\"{$clue}\"] = ['{$clue}'{$extra}];\n";

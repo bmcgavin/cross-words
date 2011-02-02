@@ -21,6 +21,16 @@ div#crossword {
 	z-index: 0;
 	background-color: black;
 	position: absolute;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+}
+
+div.end-across {
+	border-right: 2px solid;
+}
+
+div.end-down {
+	border-bottom: 2px solid;
 }
 
 div.word {
