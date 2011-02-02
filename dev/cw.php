@@ -67,9 +67,13 @@ foreach($crossword as $clue => $data) {
 	}
 	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
 	if (array_key_exists('solution', $data)) {
+		//try to speed up the solutions / check all buttons
+		/*
 		for($i = 1; $i <= strlen($data['solution']); $i++) {
 			$solutions .= "solutions[\"{$clue}-{$i}\"] = '".$data['solution'][$i-1]."';\n";
 		}
+		*/
+		$solutions .= "solutions[\"{$clue}\"] = '".$data['solution']."';\n";
 	}
 
 	$extra = "";

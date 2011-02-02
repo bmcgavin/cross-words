@@ -77,22 +77,24 @@ var words = {};
 
 function processOne(how) {
 	if (typeof(CrosswordData.active_word) != 'undefined' && CrosswordData.active_word != "" && lengths[CrosswordData.active_word]) {
-		for (i = 1; i <= lengths[CrosswordData.active_word]; i++) {
-			key = CrosswordData.active_word+"-"+i;
+		//for (i = 1; i <= lengths[CrosswordData.active_word]; i++) {
+		$.each(solutions[CrosswordData.active_word], function(index, letter) {
+			key = CrosswordData.active_word+"-"+(index+1);
 			if (how == 'cheat') {
-				$("input#"+key).val(solutions[key]);
+				$("input#"+key).val(letter);
 				if (intersections[key]) {
-					$("input#"+intersections[key]).val(solutions[key]);
+					$("input#"+intersections[key]).val(letter);
 				}
 			} else if (how == 'check') {
-				if ($("input#"+key).val() != solutions[key]) {
+				if ($("input#"+key).val() != letter) {
 					$("input#"+key).val('');
 					if (intersections[key]) {
 						$("input#"+intersections[key]).val('');
 					}
 				}
 			}
-		}
+		});
+		//}
 	}
 }
 
