@@ -7,10 +7,19 @@
 	</head>
 	<body>
 <?PHP
-	$rand = rand(9100,11000);
+	$rand = array(
+		'quick' => rand(9100,11000),
+		'cryptic' => rand(24500, 25000),
+		'hc' => rand(1, 2)
+	);
+	$type = "quick";
+	if ($_GET['type']) {
+		$type = $_GET['type'];
+	}
+	$rand = $rand[$type];
 ?>
 		<iframe src="cw.php?cw=quick-latest" width="100%" height="700px"></iframe>
-		<iframe src="cw.php?cw=quick-<?=$rand?>" width="100%" height="700px"></iframe>
+		<iframe src="cw.php?cw=<?=$type?>-<?=$rand?>" width="100%" height="700px"></iframe>
 		
 	</body>
 </html>
