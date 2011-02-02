@@ -17,6 +17,9 @@
 		$type = $_GET['type'];
 	}
 	$rand = $rand[$type];
+	while (!file_exists("ini/{$type}-{$rand}.ini")) {
+		$rand++;
+	}
 ?>
 		<iframe src="cw.php?cw=quick-latest" width="100%" height="700px"></iframe>
 		<iframe src="cw.php?cw=<?=$type?>-<?=$rand?>" width="100%" height="700px"></iframe>
