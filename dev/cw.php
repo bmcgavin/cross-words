@@ -74,7 +74,9 @@ foreach($crossword as $clue => $data) {
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
 			$data['word_boundaries'][] = $traversed;
-		}		
+		}
+		print_r($data['word_boundaries']);
+		exit;
 	}
 	if (array_key_exists('solution', $data)) {
 		//try to speed up the solutions / check all buttons
