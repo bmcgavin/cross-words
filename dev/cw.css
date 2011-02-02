@@ -25,14 +25,6 @@ div#crossword {
 	border-bottom: 1px solid;
 }
 
-div.end-across {
-	border-right: 2px solid;
-}
-
-div.end-down {
-	border-bottom: 2px solid;
-}
-
 div.word {
 	position: absolute;
 }
@@ -76,6 +68,15 @@ input.highlight {
 	background-color: orange;
 	z-index: 1000;
 }
+
+input.end-across {
+	border-right: 2px solid;
+}
+
+input.end-down {
+	border-bottom: 2px solid;
+}
+
 
 span {
 	z-index: 3000;
