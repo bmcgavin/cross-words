@@ -122,14 +122,9 @@ EOF;
 		$letter = $i+1;
 		$class = "active";
 		if (array_key_exists('word_boundaries', $data)) {
-			echo "<pre>";
-			echo "LET $letter\n";
 			if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
 				$class .= " end-".$dir;
-				
 			}
-			echo $class."\n";
-			$done = print_r($data['word_boundaries']);
 		}
 		$id = $clue."-".$letter;
 		$clue_top = 0;
