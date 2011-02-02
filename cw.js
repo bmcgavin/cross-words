@@ -32,8 +32,6 @@ var inputBind = function(event)
 		if (intersections[CrosswordData.active_letter]) {
 			$("input#"+intersections[CrosswordData.active_letter]).val('');
 		}
-		alert(letter);
-		alert(words_in_clue[CrosswordData.active_word]);
 		if (letter > 1) {
 			letter--;
 			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), words_in_clue[CrosswordData.active_word])
