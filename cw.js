@@ -13,6 +13,12 @@ CrosswordData.splitWordAndGetLetter = function() {
 	return tmp[2];
 }
 
+function store() {
+	//store a cookie if there isn't already one
+	//check the crossword
+	//submit an ajax request to flag this cookie as having completed this crossword
+	
+}
  
 var inputBind = function(event) 
 {
@@ -71,35 +77,41 @@ var words = {};
 
 function processOne(how) {
 	if (typeof(CrosswordData.active_word) != 'undefined' && CrosswordData.active_word != "" && lengths[CrosswordData.active_word]) {
-		for (i = 1; i <= lengths[CrosswordData.active_word]; i++) {
-			key = CrosswordData.active_word+"-"+i;
+		//for (i = 1; i <= lengths[CrosswordData.active_word]; i++) {
+		$.each(solutions[CrosswordData.active_word], function(index, letter) {
+			key = CrosswordData.active_word+"-"+(index+1);
 			if (how == 'cheat') {
-				$("input#"+key).val(solutions[key]);
+				$("input#"+key).val(letter);
 				if (intersections[key]) {
-					$("input#"+intersections[key]).val(solutions[key]);
+					$("input#"+intersections[key]).val(letter);
 				}
 			} else if (how == 'check') {
-				if ($("input#"+key).val() != solutions[key]) {
+				if ($("input#"+key).val() != letter) {
 					$("input#"+key).val('');
 					if (intersections[key]) {
 						$("input#"+intersections[key]).val('');
 					}
 				}
 			}
-		}
+		});
+		//}
 	}
 }
 
 function processAll(how) {
+	start = new Date().getTime()
+	$("#active-clue").html(start + " - ");
 	if (typeof(CrosswordData.active_word) != 'undefined') {
 		old_active_word = CrosswordData.active_word;
-		for(solution in solutions) {
+		$.each(solutions, function(solution, letter) {
 			solution_split = solution.split('-');
 			CrosswordData.active_word = solution_split[0]+"-"+solution_split[1];
 			processOne(how);
-		}
+		});
 		CrosswordData.active_word = old_active_word;
 	}
+	end = new Date().getTime();
+	$("#active-clue").append(end + " = " + (end - start));
 }
 
 function getSpace(from, direction) {

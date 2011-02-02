@@ -21,6 +21,12 @@ div#crossword {
 	z-index: 0;
 	background-color: black;
 	position: absolute;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+}
+
+div#active-clue {
+	font-size: 1.2em;
 }
 
 div.word {
@@ -64,8 +70,17 @@ input {
 input.highlight {
 	position: absolute;
 	background-color: orange;
-	z-index: 1000;
+	z-index: 100;
 }
+
+input.end-across {
+	width: 27px;
+}
+
+input.end-down {
+	height: 27px;
+}
+
 
 span {
 	z-index: 3000;

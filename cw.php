@@ -7,12 +7,10 @@ I need a 2D array to be drawn on screen out of divs with IDs of the clue
 
 define("SQUARE_SIZE", 29);
 $sq = SQUARE_SIZE;
-
 $ini = str_replace(".php", ".ini", basename($_SERVER['SCRIPT_NAME']));
 if (!file_exists($ini)) {
 	if (isset($argv)) {
 		$test = array($argv[1], $argv[2]);
-		$_GET = array('cw' => $argv[1].'-'.$argv[2]);
 	} else {
 		$test = preg_split('/-/', $_GET['cw']);
 	}
@@ -68,10 +66,24 @@ foreach($crossword as $clue => $data) {
 		$length += $tmp;
 	}
 	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
+	//get the words length from the clue
+	if (preg_match("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
+		$data['word_boundaries'] = array();
+		$word_lengths = preg_split("/,/", $word_lengths[1]);
+		$traversed = 0;
+		foreach($word_lengths as $word_length) {
+			$traversed += $word_length;
+			$data['word_boundaries'][] = $traversed;
+		}
+	}
 	if (array_key_exists('solution', $data)) {
+		//try to speed up the solutions / check all buttons
+		/*
 		for($i = 1; $i <= strlen($data['solution']); $i++) {
 			$solutions .= "solutions[\"{$clue}-{$i}\"] = '".$data['solution'][$i-1]."';\n";
 		}
+		*/
+		$solutions .= "solutions[\"{$clue}\"] = '".$data['solution']."';\n";
 	}
 
 	$extra = "";
@@ -79,6 +91,7 @@ foreach($crossword as $clue => $data) {
 		$prexes = preg_split('/,/', $data['extra']);
 		foreach($prexes as $prex) {
 			$extra = ", '".$prex."'";
+				
 		}
 	}
 	$words_in_clue .= "words_in_clue[\"{$clue}\"] = ['{$clue}'{$extra}];\n";
@@ -104,8 +117,13 @@ foreach($crossword as $clue => $data) {
 	<div class="word" id="{$clue}" style="top: {$top}px; left:{$left}px; height:{$height}px; width:{$width}px;">
 	
 EOF;
+	$done = false;
 	for($i = 0; $i < $length; $i++) {
 		$letter = $i+1;
+		$class = "active";
+		if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
+			$class .= " end-".$dir;
+		}
 		$id = $clue."-".$letter;
 		$clue_top = 0;
 		$clue_left = 0;
@@ -137,7 +155,7 @@ EOF;
 			}
 		}
 		$output .= <<< EOF
-		<input maxlength="1" type="text" id="{$id}" class="active" style="top:{$clue_top}px; left:{$clue_left}px;" onfocus="highlightWord('{$clue}', '{$letter}');"></input>
+		<input maxlength="1" type="text" id="{$id}" class="{$class}" style="top:{$clue_top}px; left:{$clue_left}px;" onfocus="highlightWord('{$clue}', '{$letter}');"></input>
 
 EOF;
 	}
@@ -200,14 +218,15 @@ $output = <<< EOF
 	</head>
 	<body>
 		<div id="panel" class="right">
-			<div id="active-clue">
-				&nbsp;
-			</div>
 			<div id="buttons">
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('cheat');">Cheat</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
+				<!--<button id="store" name="store" value="store" onClick="store();">Store</button>-->
+			</div>
+			<div id="active-clue">
+				&nbsp;
 			</div>
 		</div>
 		<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
