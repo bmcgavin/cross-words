@@ -97,7 +97,7 @@ function processOne(how) {
 }
 
 function processAll(how) {
-	$("#information").html(new Date().getTime());
+	$("#active-clue").html(new Date().getTime());
 	if (typeof(CrosswordData.active_word) != 'undefined') {
 		old_active_word = CrosswordData.active_word;
 		for(solution in solutions) {
@@ -107,7 +107,7 @@ function processAll(how) {
 		}
 		CrosswordData.active_word = old_active_word;
 	}
-	$("#information").append(new Date().getTime());
+	$("#active-clue").append(new Date().getTime());
 }
 
 function getSpace(from, direction) {
