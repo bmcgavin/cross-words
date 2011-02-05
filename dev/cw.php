@@ -172,9 +172,9 @@ EOF;
 		if (array_key_exists('word_hyphens', $data) && in_array($letter, $data['word_hyphens']) && $letter != $length) {
 			//OUTPUT A HYPHEN DIV
 			if ($dir == 'across') {
-				$style = "left:{$left}px";
+				$style = "left:{$clue_left}px";
 			} else if ($dir == 'down') {
-				$style = "top:{$top}px";
+				$style = "top:{$clue_top}px";
 			}
 			$output .= <<< EOF
 			<div class="hyphen-{$dir}" style="{$style};">&nbsp;</div>
