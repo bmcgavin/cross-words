@@ -111,7 +111,7 @@ function processAll(how) {
 		CrosswordData.active_word = old_active_word;
 	}
 	end = new Date().getTime();
-	$("#active-clue").append(end + " = " + (end - start));
+	//$("#active-clue").append(end + " = " + (end - start));
 }
 
 function getSpace(from, direction) {
