@@ -21,7 +21,7 @@
 	$first_type = "quick";
 	$first_when = "latest";
 	$second_type = "quick";
-	$second_type = "random"
+	$second_type = "random";
 	if (@$_GET['first_type'] && array_key_exists($_GET['first_type'], $rand)) {
 		$first_type = $_GET['first_type'];
 	}
