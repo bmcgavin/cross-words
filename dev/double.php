@@ -30,7 +30,7 @@
 	}
 	if (@$_GET['first_when'] && (
 		is_numeric($_GET['first_when']) || array_key_exists($_GET['first_when'], $whens)
-	) {
+	)) {
 		$first_when = $_GET['first_when'];
 	}
 	if (@$_GET['second_when'] && (
