@@ -223,7 +223,7 @@ $output = <<< EOF
 				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
-				<!--<button id="store" name="store" value="store" onClick="store();">Store</button>-->
+				<button id="store" name="store" value="store" onClick="store();">Store</button>
 			</div>
 			<div id="active-clue">
 				&nbsp;
