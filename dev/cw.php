@@ -76,6 +76,16 @@ foreach($crossword as $clue => $data) {
 			$data['word_boundaries'][] = $traversed;
 		}
 	}
+	//get the words length from the clue
+	if (preg_match("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
+		$data['word_hyphens'] = array();
+		$word_lengths = preg_split("/-/", $word_lengths[1]);
+		$traversed = 0;
+		foreach($word_lengths as $word_length) {
+			$traversed += $word_length;
+			$data['word_hyphens'][] = $traversed;
+		}
+	}
 	if (array_key_exists('solution', $data)) {
 		//try to speed up the solutions / check all buttons
 		/*
@@ -158,6 +168,14 @@ EOF;
 		<input maxlength="1" type="text" id="{$id}" class="{$class}" style="top:{$clue_top}px; left:{$clue_left}px;" onfocus="highlightWord('{$clue}', '{$letter}');"></input>
 
 EOF;
+		if (array_key_exists('word_hyphens', $data) && in_array($letter, $data['word_hyphens']) && $letter != $length) {
+			//OUTPUT A HYPHEN DIV
+			$output .= <<< EOF
+			<div class="hyphen" style="top:{$clue_top}px; left:{$clue_left}px;">&nbsp;</div>
+
+EOF;
+		}
+		
 	}
 	$output .= <<< EOF
 	</div>

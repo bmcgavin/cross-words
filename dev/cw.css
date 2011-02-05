@@ -29,6 +29,13 @@ div#active-clue {
 	font-size: 1.2em;
 }
 
+div.hyphen {
+	position: absolute;
+	top: 10px;
+	right: 25px;
+	background-color: black;
+}
+
 div.word {
 	position: absolute;
 }
