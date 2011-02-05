@@ -11,7 +11,7 @@
 		'first' => 1,
 		'latest' => 1,
 		'random' => 1,
-	}
+	);
 	$rand = array(
 		'quick' => rand(9100,11000),
 		'cryptic' => rand(24500, 25000),
