@@ -86,8 +86,6 @@ foreach($crossword as $clue => $data) {
 			$data['word_hyphens'][] = $traversed;
 		}
 	}
-	print_r($data);
-	exit;
 	
 	if (array_key_exists('solution', $data)) {
 		//try to speed up the solutions / check all buttons
