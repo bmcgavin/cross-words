@@ -100,7 +100,7 @@ function processOne(how) {
 
 function processAll(how) {
 	start = new Date().getTime()
-	$("#active-clue").html(start + " - ");
+	//$("#active-clue").html(start + " - ");
 	if (typeof(CrosswordData.active_word) != 'undefined') {
 		old_active_word = CrosswordData.active_word;
 		$.each(solutions, function(solution, letter) {
