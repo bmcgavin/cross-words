@@ -199,7 +199,7 @@ $scripts = <<< EOF
 		CrosswordData.UP = 38;
 		CrosswordData.DOWN = 40;
 		$("div#panel").css("width", document.width - {$sq} - {$width});
-		$('input[class^="end"]').each(function(id, element) {
+		$('input[class*="end"]').each(function(id, element) {
 			alert(id);
 		});
 	});
