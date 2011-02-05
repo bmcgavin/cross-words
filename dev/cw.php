@@ -172,7 +172,7 @@ EOF;
 		if (array_key_exists('word_hyphens', $data) && in_array($letter, $data['word_hyphens']) && $letter != $length) {
 			//OUTPUT A HYPHEN DIV
 			$output .= <<< EOF
-			<div class="hyphen" style="top:{$clue_top}px; left:{$clue_left}px;">&nbsp;</div>
+			<div class="hyphen">&nbsp;</div>
 
 EOF;
 		}
