@@ -49,6 +49,7 @@ div.hyphen-down {
 
 div.word {
 	position: absolute;
+	background-color: black;
 }
 
 div.darken {
