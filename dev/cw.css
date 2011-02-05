@@ -29,14 +29,22 @@ div#active-clue {
 	font-size: 1.2em;
 }
 
-div.hyphen {
+div.hyphen-across {
 	position: absolute;
-	top: 10px;
-	left: 25px;
+	top: 13px;
 	background-color: black;
 	z-index: 100;
 	height: 3px;
 	width: 10px;
+}
+
+div.hyphen-down {
+	position: absolute;
+	left: 13px;
+	background-color: black;
+	z-index: 100;
+	height: 10px;
+	width: 3px;
 }
 
 div.word {
