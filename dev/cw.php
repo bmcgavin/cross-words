@@ -200,7 +200,10 @@ $scripts = <<< EOF
 		CrosswordData.DOWN = 40;
 		$("div#panel").css("width", document.width - {$sq} - {$width});
 		$('input[class*="end"]').each(function(id, element) {
-			alert(id);
+			if (intersections[element.id]) {
+				tmp = element.id.split('-');
+				$(intersections[element.id]).addClass('end-'+tmp[1]);
+			}
 		});
 	});
 	</script>
