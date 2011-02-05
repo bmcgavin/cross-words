@@ -35,7 +35,7 @@
 	}
 	if (@$_GET['second_when'] && (
 		is_numeric($_GET['second_when']) || array_key_exists($_GET['second_when'], $whens)
-	) {
+	)) {
 		$second_when = $_GET['second_when'];
 	}
 	
