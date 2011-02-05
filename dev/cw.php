@@ -202,7 +202,7 @@ $scripts = <<< EOF
 		$('input[class*="end"]').each(function(id, element) {
 			if (intersections[element.id]) {
 				tmp = element.id.split('-');
-				$(intersections[element.id]).addClass('end-'+tmp[1]);
+				$('input#'+intersections[element.id]).addClass('end-'+tmp[1]);
 			}
 		});
 	});
