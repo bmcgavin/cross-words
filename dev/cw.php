@@ -12,7 +12,7 @@ $test = 'quick-latest';
 if (isset($_GET) || isset($argv)) {
 	if (isset($argv)) {
 		$test = array($argv[1], $argv[2]);
-	} else {
+	} else if (array_key_exists('cw', $_GET)) {
 		$test = preg_split('/-/', $_GET['cw']);
 	}
 	if ($test[0] != 'quick' && $test[0] != 'cryptic' && $test[0] != 'hc') {
