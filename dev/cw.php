@@ -22,6 +22,7 @@ if (isset($_GET) || isset($argv)) {
 		echo "Bad variable";
 		exit;
 	}
+	$_GET['cw'] = join($test, '-');
 	$ini = "ini/".$_GET['cw'].'.ini';
 }
 
