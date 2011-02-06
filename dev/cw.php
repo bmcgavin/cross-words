@@ -43,7 +43,7 @@ $across = "";
 $down = "";
 
 foreach($crossword as $clue => $data) {
-	$data['clue'] = str_replace("\xe2\x80\x94", '-', $data['clue']);
+	$data['clue'] = str_replace(array("\xe2\x80\x94", "\xe2\x80\x94"), '-', $data['clue']);
 	$data['clue'] = str_replace('?', '?', $data['clue']);
 	$data['clue'] = str_replace('’', '\'', $data['clue']);
 	//build the actual length
