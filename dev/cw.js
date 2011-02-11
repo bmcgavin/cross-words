@@ -125,7 +125,9 @@ function getSpace(from, direction) {
 		) && intersections[split_from[0]+"-"+split_from[1]+"-"+split_from[2]]
 	) {
 		//$("div#information").html(//$("div#information").html()+new Date().getTime()+":INT"+from);
-		return getSpace(intersections[split_from[0]+"-"+split_from[1]+"-"+split_from[2]], direction);
+		//Don't move in the next clue, just select the next clue
+		//return getSpace(intersections[split_from[0]+"-"+split_from[1]+"-"+split_from[2]], direction);
+		return intersections[split_from[0]+"-"+split_from[1]+"-"+split_from[2]];
 	} else {
 		if (
 			(
