@@ -80,7 +80,7 @@ foreach($crossword as $clue => $data) {
 			exit;
 		}
 		$data['word_boundaries'] = array();
-		$word_lengths = preg_split("/,/", $word_lengths[1]);
+		$word_lengths = preg_split("/,/", $word_lengths[1][0]);
 		$traversed = 0;
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
@@ -90,7 +90,7 @@ foreach($crossword as $clue => $data) {
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
 		$data['word_hyphens'] = array();
-		$word_lengths = preg_split("/\-/", $word_lengths[1]);
+		$word_lengths = preg_split("/\-/", $word_lengths[1][0]);
 		$traversed = 0;
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
