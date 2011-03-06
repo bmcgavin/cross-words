@@ -100,7 +100,7 @@ function processOne(how) {
 
 function processAll(how) {
 	start = new Date().getTime()
-	$("#active-clue").html(start + " - ");
+	//$("#active-clue").html(start + " - ");
 	if (typeof(CrosswordData.active_word) != 'undefined') {
 		old_active_word = CrosswordData.active_word;
 		$.each(solutions, function(solution, letter) {
@@ -111,7 +111,7 @@ function processAll(how) {
 		CrosswordData.active_word = old_active_word;
 	}
 	end = new Date().getTime();
-	$("#active-clue").append(end + " = " + (end - start));
+	//$("#active-clue").append(end + " = " + (end - start));
 }
 
 function getSpace(from, direction) {
@@ -125,7 +125,9 @@ function getSpace(from, direction) {
 		) && intersections[split_from[0]+"-"+split_from[1]+"-"+split_from[2]]
 	) {
 		//$("div#information").html(//$("div#information").html()+new Date().getTime()+":INT"+from);
-		return getSpace(intersections[split_from[0]+"-"+split_from[1]+"-"+split_from[2]], direction);
+		//Don't move in the next clue, just select the next clue
+		//return getSpace(intersections[split_from[0]+"-"+split_from[1]+"-"+split_from[2]], direction);
+		return intersections[split_from[0]+"-"+split_from[1]+"-"+split_from[2]];
 	} else {
 		if (
 			(
