@@ -1,16 +1,26 @@
+div#padding {
+	position: relative;
+	left: 10px;
+}
+
+p.small {
+	font-size: 0.6em;
+}
+
 div.right {
-	float: right;
-	z-index: -100;
+	position: relative;
+	float:right;
+	z-index: 100;
 }
 
 div#across {
 	float: left;
-	width: 40%;
+	width: 45%;
 }
 
 div#down {
 	float: right;
-	width: 40%;
+	width: 45%;
 }
 
 div#buttons {

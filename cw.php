@@ -229,17 +229,19 @@ $output = <<< EOF
 				&nbsp;
 			</div>
 		</div>
-		<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
+		<div id="padding">
+			<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
 {$output}
-		</div>
-		<div id="information" class="bottom" style="top:{$height}px;">
-			<div id="across">
-				<h3>Across</h3>
-{$across}
 			</div>
-			<div id="down">
-				<h3>Down</h3>
+			<div id="information" class="bottom" style="top:{$height}px;">
+				<div id="across">
+					<h3>Across</h3>
+{$across}
+				</div>
+				<div id="down">
+					<h3>Down</h3>
 {$down}
+				</div>
 			</div>
 		</div>
 	</body>

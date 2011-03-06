@@ -28,6 +28,11 @@ if (isset($_GET) || isset($argv)) {
 
 
 $crossword = parse_ini_file($ini, true);
+$meta = array();
+if (arraY_key_exists('meta', $crossword)) {
+	$meta = $crossword['meta'];
+	unset($crossword['meta']);
+}
 $grid = array();
 $max_x = 0;
 $max_y = 0;
@@ -215,6 +220,7 @@ EOF;
 
 $width =SQUARE_SIZE * ($max_x);
 $height=SQUARE_SIZE * ($max_y);
+$panel_start = $height + SQUARE_SIZE;
 
 $scripts = <<< EOF
 	<script type="text/javascript">
@@ -242,6 +248,11 @@ $scripts = <<< EOF
 
 EOF;
 
+$url = 'URL';
+if (array_key_Exists('url', $meta)) {
+	$url = $meta['url'];
+}
+
 $output = <<< EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -267,17 +278,20 @@ $output = <<< EOF
 				&nbsp;
 			</div>
 		</div>
-		<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
+		<div id="padding">
+			<p class="small">Sourced from <a href="{$url}">{$url}</a></p>
+			<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
 {$output}
-		</div>
-		<div id="information" class="bottom" style="top:{$height}px;">
-			<div id="across">
-				<h3>Across</h3>
-{$across}
 			</div>
-			<div id="down">
-				<h3>Down</h3>
+			<div id="information" class="bottom" style="top:{$panel_start}px;">
+				<div id="across">
+					<h3>Across</h3>
+{$across}
+				</div>
+				<div id="down">
+					<h3>Down</h3>
 {$down}
+				</div>
 			</div>
 		</div>
 	</body>
