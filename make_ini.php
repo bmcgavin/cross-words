@@ -96,5 +96,6 @@ foreach($matches[1] as $key => $clue) {
 print_r($clues);
 
 make_ini($clues, $type.'-'.$cw.'.ini', $url);
+unlink($cw);
 
 

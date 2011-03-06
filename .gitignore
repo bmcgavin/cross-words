@@ -1,4 +1,5 @@
-ini
-dev/ini
-index.html
+ini/quick-*
+ini/cryptic-*
+dev/ini/quick-*
+dev/ini/cryptic-*
 
