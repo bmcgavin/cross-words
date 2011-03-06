@@ -63,8 +63,8 @@
 	$second = $second_type.'-'.$second_when;
 
 ?>
-		<iframe src="cw.php?cw=<?=$first?>" width="100%" height="700px"></iframe>
-		<iframe src="cw.php?cw=<?=$second?>" width="100%" height="700px"></iframe>
+		<iframe src="cw.php?cw=<?=$first?>" width="100%" height="1000px"></iframe>
+		<iframe src="cw.php?cw=<?=$second?>" width="100%" height="1000px"></iframe>
 		
 	</body>
 </html>

@@ -31,8 +31,13 @@ function curl_request($url)
     return $result;
 }
 
-function make_ini($arr, $name) {
-	$tmp = "";
+function make_ini($arr, $name, $url) {
+	$tmp = <<<EOF
+[meta]
+url="{$url}"
+
+
+EOF;
 	foreach ($arr as $clue => $data) {
 		$tmp .= '['.$clue."]\n";
 		foreach($data as $key => $var) {
@@ -43,10 +48,12 @@ function make_ini($arr, $name) {
 	file_put_contents($name, $tmp);
 }
 
+$url = "http://www.guardian.co.uk/crosswords/{$type}/{$cw}";
+
 if (file_exists($cw)) {
 	$file = file_get_contents($cw);
 } else {
-	$file = curl_request("http://www.guardian.co.uk/crosswords/{$type}/{$cw}");
+	$file = curl_request($url);
 	$ret = file_put_contents("./".$cw, $file);
 }
 
@@ -88,6 +95,6 @@ foreach($matches[1] as $key => $clue) {
 
 print_r($clues);
 
-make_ini($clues, $type.'-'.$cw.'.ini');
+make_ini($clues, $type.'-'.$cw.'.ini', $url);
 
 

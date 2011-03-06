@@ -7,11 +7,12 @@ I need a 2D array to be drawn on screen out of divs with IDs of the clue
 
 define("SQUARE_SIZE", 29);
 $sq = SQUARE_SIZE;
-$ini = str_replace(".php", ".ini", basename($_SERVER['SCRIPT_NAME']));
-if (!file_exists($ini)) {
+$test = array('quick', 'latest');
+
+if (isset($_GET) || isset($argv)) {
 	if (isset($argv)) {
 		$test = array($argv[1], $argv[2]);
-	} else {
+	} else if (array_key_exists('cw', $_GET)) {
 		$test = preg_split('/-/', $_GET['cw']);
 	}
 	if ($test[0] != 'quick' && $test[0] != 'cryptic' && $test[0] != 'hc') {
@@ -21,11 +22,17 @@ if (!file_exists($ini)) {
 		echo "Bad variable";
 		exit;
 	}
+	$_GET['cw'] = join($test, '-');
 	$ini = "ini/".$_GET['cw'].'.ini';
 }
 
 
 $crossword = parse_ini_file($ini, true);
+$meta = array();
+if (arraY_key_exists('meta', $crossword)) {
+	$meta = $crossword['meta'];
+	unset($crossword['meta']);
+}
 $grid = array();
 $max_x = 0;
 $max_y = 0;
@@ -41,6 +48,11 @@ $across = "";
 $down = "";
 
 foreach($crossword as $clue => $data) {
+	$data['clue'] = str_replace(array("\xe2\x80\x94", "\xe2\x80\x93"), '-', $data['clue']);
+	$data['clue'] = str_replace('?', '?', $data['clue']);
+	$data['clue'] = str_replace('’', '\'', $data['clue']);
+	$data['clue'] = str_replace("\xc2\xad", '', $data['clue']);
+	$data['clue'] = str_replace("\xe2\x80\xa6", '...', $data['clue']);
 	//build the actual length
 	/* TODO
 	 * There's a problem here if the number of words in the solution
@@ -67,15 +79,27 @@ foreach($crossword as $clue => $data) {
 	}
 	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
 	//get the words length from the clue
-	if (preg_match("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
+	if (preg_match_all("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
 		$data['word_boundaries'] = array();
-		$word_lengths = preg_split("/,/", $word_lengths[1]);
+		$word_lengths = preg_split("/,/", $word_lengths[1][0]);
 		$traversed = 0;
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
 			$data['word_boundaries'][] = $traversed;
 		}
+		
 	}
+	//get the words length from the clue
+	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
+		$data['word_hyphens'] = array();
+		$word_lengths = preg_split("/\-/", $word_lengths[1][0]);
+		$traversed = 0;
+		foreach($word_lengths as $word_length) {
+			$traversed += $word_length;
+			$data['word_hyphens'][] = $traversed;
+		}
+	}
+	
 	if (array_key_exists('solution', $data)) {
 		//try to speed up the solutions / check all buttons
 		/*
@@ -90,7 +114,7 @@ foreach($crossword as $clue => $data) {
 	if (array_key_exists('extra', $data)) {
 		$prexes = preg_split('/,/', $data['extra']);
 		foreach($prexes as $prex) {
-			$extra = ", '".$prex."'";
+			$extra .= ", '".$prex."'";
 				
 		}
 	}
@@ -158,6 +182,19 @@ EOF;
 		<input maxlength="1" type="text" id="{$id}" class="{$class}" style="top:{$clue_top}px; left:{$clue_left}px;" onfocus="highlightWord('{$clue}', '{$letter}');"></input>
 
 EOF;
+		if (array_key_exists('word_hyphens', $data) && in_array($letter, $data['word_hyphens']) && $letter != $length) {
+			//OUTPUT A HYPHEN DIV
+			if ($dir == 'across') {
+				$style = "left:".($clue_left+(SQUARE_SIZE-5))."px";
+			} else if ($dir == 'down') {
+				$style = "top:".($clue_top+(SQUARE_SIZE-5))."px";
+			}
+			$output .= <<< EOF
+			<div class="hyphen-{$dir}" style="{$style};">&nbsp;</div>
+
+EOF;
+		}
+		
 	}
 	$output .= <<< EOF
 	</div>
@@ -183,6 +220,7 @@ EOF;
 
 $width =SQUARE_SIZE * ($max_x);
 $height=SQUARE_SIZE * ($max_y);
+$panel_start = $height + SQUARE_SIZE;
 
 $scripts = <<< EOF
 	<script type="text/javascript">
@@ -199,10 +237,21 @@ $scripts = <<< EOF
 		CrosswordData.UP = 38;
 		CrosswordData.DOWN = 40;
 		$("div#panel").css("width", document.width - {$sq} - {$width});
+		$('input[class*="end"]').each(function(id, element) {
+			if (intersections[element.id]) {
+				tmp = element.id.split('-');
+				$('input#'+intersections[element.id]).addClass('end-'+tmp[1]);
+			}
+		});
 	});
 	</script>
 
 EOF;
+
+$url = 'URL';
+if (array_key_Exists('url', $meta)) {
+	$url = $meta['url'];
+}
 
 $output = <<< EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -230,10 +279,11 @@ $output = <<< EOF
 			</div>
 		</div>
 		<div id="padding">
+			<p class="small">Sourced from <a href="{$url}">{$url}</a></p>
 			<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
 {$output}
 			</div>
-			<div id="information" class="bottom" style="top:{$height}px;">
+			<div id="information" class="bottom" style="top:{$panel_start}px;">
 				<div id="across">
 					<h3>Across</h3>
 {$across}
