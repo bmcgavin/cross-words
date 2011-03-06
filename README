@@ -1,0 +1,20 @@
+Experimental PHP/JS crossword engine.
+
+Make a crossword in a simple .ini format, and the PHP script will make
+a page for it. The JS will provide navigation, clue highlighting, 
+cheat/check functions, punctuation marks, and whatnot.
+
+Crosswords courtesy of Envy from the Hackney Citizen.
+
+Influenced by the utterly excellent free crosswords provided online 
+by The Guardian in the UK. I wanted a page with a smaller proportion
+of ad content so it would fit on a single Kindle screen.
+
+This repo contains a script that can scrape Guardian crosswords, but
+as I'm not sure what their reaction would be, I'm not going to provide
+you with any scraped crosswords.
+
+TODO : 
+
+Multi-word clues are still a bit ropey
+
