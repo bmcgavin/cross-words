@@ -248,7 +248,7 @@ $scripts = <<< EOF
 
 EOF;
 
-$url = 'URL';
+$url = '#';
 if (array_key_Exists('url', $meta)) {
 	$url = $meta['url'];
 }
