@@ -23,7 +23,7 @@ if (isset($_GET) || isset($argv)) {
 		exit;
 	}
 	$_GET['cw'] = join($test, '-');
-	$ini = "ini/".$_GET['cw'].'.ini';
+	$ini = "../ini/".$_GET['cw'].'.ini';
 }
 
 
@@ -121,7 +121,12 @@ foreach($crossword as $clue => $data) {
 	$words_in_clue .= "words_in_clue[\"{$clue}\"] = ['{$clue}'{$extra}];\n";
 
 		
-	list($num, $dir, $let) = preg_split("/-/", $clue);
+    $dir = null;
+	list($num, $dir) = preg_split("/-/", $clue);
+    if ($dir == null) {
+        error_log('No direction in \'' . $clue . '\'');
+        continue;
+    }
 	$x = $data['x'];
 	$y = $data['y'];
 	$top = SQUARE_SIZE * $y;
@@ -132,9 +137,12 @@ foreach($crossword as $clue => $data) {
 		$width = SQUARE_SIZE * $length;
 		break;
 	case 'down':
-		$height = SQAURE_SIZE * $length;
+		$height = SQUARE_SIZE * $length;
 		$width = SQUARE_SIZE;
 		break;
+    default:
+        error_log('Bad direction in \'' . $clue . '\'');
+        continue;
 	}
 	$output .= <<< EOF
 	<span style="top:{$top}px; left:{$left}px;" class="indicator">{$num}</span>

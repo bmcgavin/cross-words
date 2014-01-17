@@ -41,7 +41,7 @@
 	
 	function get_random_for_type($type, $rand) {
 		$ret = $rand[$type];
-		while (!file_exists("ini/{$type}-{$rand}.ini")) {
+		while (!file_exists("../ini/{$type}-{$rand}.ini")) {
 			$rand = array(
 				'quick' => rand(9100,11000),
 				'cryptic' => rand(24500, 25000),

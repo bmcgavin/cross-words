@@ -17,7 +17,9 @@ function curl_request($url)
         CURLOPT_FRESH_CONNECT => 1,
         CURLOPT_RETURNTRANSFER => 1,
         CURLOPT_FORBID_REUSE => 1,
-        CURLOPT_TIMEOUT => 4,
+        CURLOPT_TIMEOUT => 60,
+        CURLOPT_CONNECTTIMEOUT => 60,
+        CURLOPT_FOLLOWLOCATION => true,
     );
     
     $ch = curl_init();
@@ -84,7 +86,7 @@ foreach($matches[1] as $key => $clue) {
 		'x' => $coords[1]/SQUARE_SIZE,
 		'y' => $coords[2]/SQUARE_SIZE,
 		'length' => count($letters[0]),
-		'clue' => '"'.$cluetext[1].'"',
+		'clue' => '"'.str_replace('"', '\"', $cluetext[1]).'"',
 		'solution' => '"'.$sol.'"',
 		
 	);
@@ -93,7 +95,7 @@ foreach($matches[1] as $key => $clue) {
 	}
 }
 
-print_r($clues);
+//print_r($clues);
 
 make_ini($clues, $type.'-'.$cw.'.ini', $url);
 unlink($cw);
