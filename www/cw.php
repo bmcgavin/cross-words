@@ -266,10 +266,10 @@ if ($test[1] == 'latest') {
     $test[1] = basename($url);
 }
 if (file_exists('../ini/' . $test[0] . '-' . ($test[1] - 1) . '.ini')) {
-    $nav .= '<p class="small"><a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] - 1) . '">Previous</a></p>';
+    $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] - 1) . '">Previous</a>';
 }
 if (file_exists('../ini/' . $test[0] . '-' . ($test[1] + 1) . '.ini')) {
-    $nav .= '<p class="small"><a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 1) . '">Next</a></p>';
+    $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 1) . '">Next</a>';
 }
 $output = <<< EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -297,8 +297,9 @@ $output = <<< EOF
 			</div>
 		</div>
 		<div id="padding">
-			<p class="small">Sourced from <a href="{$url}">{$url}</a></p>
+			<p class="small">Sourced from <a href="{$url}">{$url}</a>
 {$nav}
+            </p>
 			<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
 {$output}
 			</div>
