@@ -40,9 +40,10 @@
 	}
 	
 	function get_random_for_type($type, $rand) {
-		$ret = $rand[$type];
+		$rand = $rand[$type];
         $count = 0;
-		while (!file_exists("../ini/{$type}-{$rand}.ini")) {
+        $file = "../ini/{$type}-{$rand}.ini";
+		while (!file_exists($file)) {
             if ($count >= 10) {
                 echo "Can't find any inis";
                 exit;

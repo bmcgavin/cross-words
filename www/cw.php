@@ -29,7 +29,7 @@ if (isset($_GET) || isset($argv)) {
 
 $crossword = parse_ini_file($ini, true);
 $meta = array();
-if (arraY_key_exists('meta', $crossword)) {
+if (array_key_exists('meta', $crossword)) {
 	$meta = $crossword['meta'];
 	unset($crossword['meta']);
 }
@@ -257,10 +257,17 @@ $scripts = <<< EOF
 EOF;
 
 $url = '#';
-if (array_key_Exists('url', $meta)) {
+if (array_key_exists('url', $meta)) {
 	$url = $meta['url'];
 }
 
+$nav = '';
+if (file_exists('../ini/' . $test[0] . '-' . ($test[1] - 1) . '.ini')) {
+    $nav .= '<p class="small"><a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] - 1) . '">Previous</a></p>';
+}
+if (file_exists('../ini/' . $test[0] . '-' . ($test[1] + 1) . '.ini')) {
+    $nav .= '<p class="small"><a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 1) . '">Next</a></p>';
+}
 $output = <<< EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -280,7 +287,7 @@ $output = <<< EOF
 				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
-				<button id="store" name="store" value="store" onClick="store();">Store</button>
+				<!-- <button id="store" name="store" value="store" onClick="store();">Store</button> -->
 			</div>
 			<div id="active-clue">
 				&nbsp;
@@ -288,6 +295,7 @@ $output = <<< EOF
 		</div>
 		<div id="padding">
 			<p class="small">Sourced from <a href="{$url}">{$url}</a></p>
+{$nav}
 			<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
 {$output}
 			</div>
