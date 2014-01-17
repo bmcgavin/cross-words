@@ -273,7 +273,7 @@ if (file_exists('../ini/' . $test[0] . '-' . ($test[1] - 1) . '.ini')) {
 if (file_exists('../ini/' . $test[0] . '-' . ($test[1] + 1) . '.ini')) {
     $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 1) . '">Next</a>';
 } else if ($test[0] == 'cryptic' && file_exists('../ini/' . $test[0] . '-' . ($test[1] + 2) . '.ini')) {
-    $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 2) . '">Previous</a>';
+    $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 2) . '">Next</a>';
 }
 $output = <<< EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
