@@ -262,6 +262,9 @@ if (array_key_exists('url', $meta)) {
 }
 
 $nav = '';
+if ($test[1] == 'latest') {
+    $test[1] = basename($url);
+}
 if (file_exists('../ini/' . $test[0] . '-' . ($test[1] - 1) . '.ini')) {
     $nav .= '<p class="small"><a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] - 1) . '">Previous</a></p>';
 }
