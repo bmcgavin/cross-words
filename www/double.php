@@ -42,8 +42,7 @@
 	function get_random_for_type($type, $rand) {
 		$rand = $rand[$type];
         $count = 0;
-        $file = "../ini/{$type}-{$rand}.ini";
-		while (!file_exists($file)) {
+		while (!file_exists("../ini/{$type}-{$rand}.ini")) {
             if ($count >= 10) {
                 echo "Can't find any inis";
                 exit;
@@ -54,9 +53,9 @@
 				'cryptic' => rand(24500, 25000),
 				'hc' => rand(1, 2)
 			);
-			$ret = $rand[$type];
+			$rand = $rand[$type];
 		}
-		return $ret;
+		return $rand;
 	}
 	
 	if ($first_when == 'random') {
