@@ -52,6 +52,7 @@ foreach($crossword as $clue => $data) {
 	$data['clue'] = str_replace('?', '?', $data['clue']);
 	$data['clue'] = str_replace('’', '\'', $data['clue']);
 	$data['clue'] = str_replace("\xc2\xad", '', $data['clue']);
+	$data['clue'] = str_replace("\xc2\xa0", ' ', $data['clue']);
 	$data['clue'] = str_replace("\xe2\x80\xa6", '...', $data['clue']);
 	//build the actual length
 	/* TODO
