@@ -23,7 +23,7 @@ if (isset($_GET) || isset($argv)) {
 		exit;
 	}
 	$_GET['cw'] = join($test, '-');
-	$ini = "ini/".$_GET['cw'].'.ini';
+	$ini = "../ini/".$_GET['cw'].'.ini';
 }
 
 
@@ -52,6 +52,7 @@ foreach($crossword as $clue => $data) {
 	$data['clue'] = str_replace('?', '?', $data['clue']);
 	$data['clue'] = str_replace('’', '\'', $data['clue']);
 	$data['clue'] = str_replace("\xc2\xad", '', $data['clue']);
+	$data['clue'] = str_replace("\xc2\xa0", ' ', $data['clue']);
 	$data['clue'] = str_replace("\xe2\x80\xa6", '...', $data['clue']);
 	//build the actual length
 	/* TODO
@@ -121,7 +122,12 @@ foreach($crossword as $clue => $data) {
 	$words_in_clue .= "words_in_clue[\"{$clue}\"] = ['{$clue}'{$extra}];\n";
 
 		
-	list($num, $dir, $let) = preg_split("/-/", $clue);
+    $dir = null;
+	list($num, $dir) = preg_split("/-/", $clue);
+    if ($dir == null) {
+        error_log('No direction in \'' . $clue . '\'');
+        continue;
+    }
 	$x = $data['x'];
 	$y = $data['y'];
 	$top = SQUARE_SIZE * $y;
@@ -132,9 +138,12 @@ foreach($crossword as $clue => $data) {
 		$width = SQUARE_SIZE * $length;
 		break;
 	case 'down':
-		$height = SQAURE_SIZE * $length;
+		$height = SQUARE_SIZE * $length;
 		$width = SQUARE_SIZE;
 		break;
+    default:
+        error_log('Bad direction in \'' . $clue . '\'');
+        continue;
 	}
 	$output .= <<< EOF
 	<span style="top:{$top}px; left:{$left}px;" class="indicator">{$num}</span>
@@ -203,14 +212,14 @@ EOF;
 	$word = $data['clue'];
 	if ($dir == 'across') {
 		$across .= <<< EOF
-	<div id="{$clue}-clue" class="clue" onClick="highlightWord('{$clue}', '1');">
+	<div id="{$clue}-clue" class="clue" onClick="highlightWord('{$clue}');">
 		{$num} : {$word}
 	</div>
 
 EOF;
 	} else if ($dir == 'down') {
 		$down .= <<< EOF
-	<div id="{$clue}-clue" class="clue">
+	<div id="{$clue}-clue" class="clue" onClick="highlightWord('{$clue}');">
 		{$num} : {$word}
 	</div>
 
@@ -249,10 +258,24 @@ $scripts = <<< EOF
 EOF;
 
 $url = '#';
-if (array_key_Exists('url', $meta)) {
+if (array_key_exists('url', $meta)) {
 	$url = $meta['url'];
 }
 
+$nav = '';
+if ($test[1] == 'latest') {
+    $test[1] = basename($url);
+}
+if (file_exists('../ini/' . $test[0] . '-' . ($test[1] - 1) . '.ini')) {
+    $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] - 1) . '">Previous</a>';
+} else if ($test[0] == 'cryptic' && file_exists('../ini/' . $test[0] . '-' . ($test[1] - 2) . '.ini')) {
+    $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] - 2) . '">Previous</a>';
+}
+if (file_exists('../ini/' . $test[0] . '-' . ($test[1] + 1) . '.ini')) {
+    $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 1) . '">Next</a>';
+} else if ($test[0] == 'cryptic' && file_exists('../ini/' . $test[0] . '-' . ($test[1] + 2) . '.ini')) {
+    $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 2) . '">Next</a>';
+}
 $output = <<< EOF
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -272,14 +295,16 @@ $output = <<< EOF
 				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
-				<button id="concentrate" name="concentrate" value="concentrate" onClick="concentrate();">Concentrate</button>
+				<!-- <button id="store" name="store" value="store" onClick="store();">Store</button> -->
 			</div>
 			<div id="active-clue">
 				&nbsp;
 			</div>
 		</div>
 		<div id="padding">
-			<p class="small">Sourced from <a href="{$url}">{$url}</a></p>
+			<p class="small">Sourced from <a href="{$url}">{$url}</a>
+{$nav}
+            </p>
 			<div id="crossword" class="grid" style="width: {$width}px; height:{$height}px;">
 {$output}
 			</div>
