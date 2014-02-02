@@ -39,6 +39,10 @@ div#active-clue {
 	font-size: 1.2em;
 }
 
+div#active-word {
+    position: relative;
+}
+
 div.hyphen-across {
 	position: absolute;
 	top: 13px;
