@@ -300,6 +300,9 @@ $output = <<< EOF
 			<div id="active-clue">
 				&nbsp;
 			</div>
+			<div id="active-word">
+				&nbsp;
+			</div>
 		</div>
 		<div id="padding">
 			<p class="small">Sourced from <a href="{$url}">{$url}</a>
