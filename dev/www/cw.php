@@ -29,7 +29,7 @@ if (isset($_GET) || isset($argv)) {
 
 $crossword = parse_ini_file($ini, true);
 $meta = array();
-if (arraY_key_exists('meta', $crossword)) {
+if (array_key_exists('meta', $crossword)) {
 	$meta = $crossword['meta'];
 	unset($crossword['meta']);
 }
@@ -203,7 +203,7 @@ EOF;
 	$word = $data['clue'];
 	if ($dir == 'across') {
 		$across .= <<< EOF
-	<div id="{$clue}-clue" class="clue">
+	<div id="{$clue}-clue" class="clue" onClick="highlightWord('{$clue}', '1');">
 		{$num} : {$word}
 	</div>
 
@@ -272,7 +272,7 @@ $output = <<< EOF
 				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('check');">Check</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('check');">Check All</button>
-				<button id="store" name="store" value="store" onClick="store();">Store</button>
+				<button id="concentrate" name="concentrate" value="concentrate" onClick="concentrate();">Concentrate</button>
 			</div>
 			<div id="active-clue">
 				&nbsp;

@@ -19,6 +19,11 @@ function store() {
 	//submit an ajax request to flag this cookie as having completed this crossword
 	
 }
+
+function concentrate() {
+    //Remove the board, show a single clue and the layout (and any letters)
+    $("div#crossword").hide();
+} 
  
 var inputBind = function(event) 
 {
