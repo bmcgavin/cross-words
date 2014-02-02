@@ -221,7 +221,7 @@ function highlightWord(word, letter) {
 	//search through all of words_in_clue to see if this word is in any others
 	//TODO Make this a jQ method call so it can be incorporated into the backspace multi-word function above.
     $("div#active-word").html($("div#" + word).html());
-    $("div#active-word.input").removeAttr('id').keydown(inputBind);
+    $("div#active-word :input").removeAttr('id').keydown(inputBind);
 	for (tmp in words_in_clue) {
 		if (typeof(words_in_clue[tmp]) != 'undefined') {
 			if (tmp != word && words_in_clue[tmp].length > 1) {
