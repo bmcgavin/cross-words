@@ -192,15 +192,8 @@ function moveTo(new_letter, old_word) {
 }
 
 function clearAllExcept(exceptions) {
-	tmp = [];
-	if (typeof(exceptions) == 'object') {
-		tmp.push(exceptions[0]);
-	}
-	avoid = "not:(#"+tmp.join("):not:(#")+")";
-	$("div#crossword div:"+avoid+" > input").removeClass("highlight").css("z-index",split_word[0]);
-//.unbind('keyCrosswordData.UP');
-	avoid = "not:(#"+tmp.join("-clue):not:(#")+"-clue)";
-	$("div.clue:"+avoid).removeClass("darken");
+	$("div#crossword div > input.active").removeClass("highlight").css("z-index", '');
+	$("div.clue").removeClass("darken");
 }
 
 function highlightWord(word, letter) {
