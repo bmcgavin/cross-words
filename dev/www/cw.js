@@ -63,6 +63,7 @@ var inputBind = function(event)
 		//move CrosswordData.RIGHT/CrosswordData.DOWN for keypress, CrosswordData.UP/CrosswordData.LEFT for backspace
 		//$("div#information").html($("div#information").html()+new Date().getTime()+":LETT="+letter+"<br/>");
 		//console.log(new Date().getTime()+":LETT="+letter);
+		$("div#information").html($("div#information").html()+new Date().getTime()+":WHICH="+event.which+"<br/>");
 		console.log(new Date().getTime()+":WHICH="+event.which);
 		if (letter < lengths[CrosswordData.active_word]) {
 			letter++;
