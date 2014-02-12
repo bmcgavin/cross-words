@@ -238,7 +238,7 @@ $scripts = <<< EOF
 	{$solutions}
 	{$words_in_clue}
 	$().ready(function() {
-		$("input").keydown(inputBind);
+		$("input").keyup(inputBind);
 		CrosswordData.active_letter = "";
 		CrosswordData.active_word = "";
 		CrosswordData.LEFT = 37;
