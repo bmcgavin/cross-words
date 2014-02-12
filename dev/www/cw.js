@@ -239,8 +239,9 @@ function highlightWord(word, letter) {
 		clue += $("div#"+currentWord+"-clue").html()+"\n</br>";
 	}
 	$("div#active-clue").html(clue);
-    $("div#active-word").html($("div#" + word).html());
-    $("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
+    //Concentration mode
+	//$("div#active-word").html($("div#" + word).html());
+    //$("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 }
 
 function get_letter(which) {
