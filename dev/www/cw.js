@@ -89,11 +89,12 @@ var inputBind = function(event)
 var words = {};
 
 function processOne(how) {
-	wingywords = getAllWordsInClue(CrosswordData.active_word);
-	if (typeof(CrosswordData.active_word) != 'undefined' && CrosswordData.active_word != "" && lengths[CrosswordData.active_word]) {
-		for (index = 0; index < lengths[CrosswordData.active_word]; index++) {
-			letter = solutions[CrosswordData.active_word][index];
-			key = CrosswordData.active_word+"-"+(index+1);
+	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
+	for (i in allWordsInClue) {
+		currentWord = allWordsInClue[i];
+		for (index = 0; index < lengths[currentWord]; index++) {
+			letter = solutions[currentWord][index];
+			key = currentWord+"-"+(index+1);
 			if (how == 'cheat') {
 				$("input#"+key).val(letter);
 				if (intersections[key]) {
@@ -114,10 +115,10 @@ function processOne(how) {
 function getAllWordsInClue(anyWord) {
 	for (tmp in words_in_clue) {
 		if (typeof(words_in_clue[tmp]) != 'undefined') {
-			if (tmp != oneOfThem && words_in_clue[tmp].length > 1) {
+			if (tmp != anyWord && words_in_clue[tmp].length > 1) {
 				for (tmptmp in words_in_clue[tmp]) {
 					if (typeof(words_in_clue[tmp][tmptmp]) != 'undefined') {
-						if (words_in_clue[tmp][tmptmp] == oneOfThem)	{
+						if (words_in_clue[tmp][tmptmp] == anyWord)	{
 							return words_in_clue[tmp];
 						}
 					}
@@ -228,40 +229,18 @@ function highlightWord(word, letter) {
 	
 	clearAllExcept(words_in_clue[word]);
 	clue = "";
-	for (tmp in words_in_clue[word]) {
-		if (typeof(words_in_clue[word][tmp]) != 'undefined') {
-			//alert(words[word]);
-			$("div#"+words_in_clue[word][tmp]+".word input").addClass("highlight").css("z-index","99");
-			$("div#"+words_in_clue[word][tmp]+"-clue").addClass("darken");
-			clue += $("div#"+words_in_clue[word][tmp]+"-clue").html()+"\n</br>";
-		}
-	}
-	$("div#active-clue").html(clue);
 	//search through all of words_in_clue to see if this word is in any others
 	//TODO Make this a jQ method call so it can be incorporated into the backspace multi-word function above.
+	allWordsInClue = getAllWordsInClue(word);
+	for (i in allWordsInClue) {
+		currentWord = allWordsInClue[i];
+		$("div#"+currentWord+".word input").addClass("highlight").css("z-index","99");
+		$("div#"+currentWord+"-clue").addClass("darken");
+		clue += $("div#"+currentWord+"-clue").html()+"\n</br>";
+	}
+	$("div#active-clue").html(clue);
     $("div#active-word").html($("div#" + word).html());
     $("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
-	for (tmp in words_in_clue) {
-		if (typeof(words_in_clue[tmp]) != 'undefined') {
-			if (tmp != word && words_in_clue[tmp].length > 1) {
-				doneit = false;
-				for (tmptmp in words_in_clue[tmp]) {
-					if (typeof(words_in_clue[tmp][tmptmp]) != 'undefined') {
-						if (words_in_clue[tmp][tmptmp] == word)	{
-							for (doit in words_in_clue[tmp]) {
-								$("div#"+words_in_clue[tmp][doit]+".word input").addClass("highlight").css("z-index","99");
-								$("div#"+words_in_clue[tmp][doit]+"-clue").addClass("darken");
-								doneit = true;
-							}
-							if (doneit) {
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
 }
 
 function get_letter(which) {
