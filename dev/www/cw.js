@@ -89,6 +89,7 @@ var inputBind = function(event)
 var words = {};
 
 function processOne(how) {
+	wingywords = getAllWordsInClue(CrosswordData.active_word);
 	if (typeof(CrosswordData.active_word) != 'undefined' && CrosswordData.active_word != "" && lengths[CrosswordData.active_word]) {
 		for (index = 0; index < lengths[CrosswordData.active_word]; index++) {
 			letter = solutions[CrosswordData.active_word][index];
@@ -108,6 +109,24 @@ function processOne(how) {
 			}
 		}
 	}
+}
+
+function getAllWordsInClue(anyWord) {
+	for (tmp in words_in_clue) {
+		if (typeof(words_in_clue[tmp]) != 'undefined') {
+			if (tmp != oneOfThem && words_in_clue[tmp].length > 1) {
+				for (tmptmp in words_in_clue[tmp]) {
+					if (typeof(words_in_clue[tmp][tmptmp]) != 'undefined') {
+						if (words_in_clue[tmp][tmptmp] == oneOfThem)	{
+							return words_in_clue[tmp];
+						}
+					}
+				}
+			}
+		}
+	}
+	//Single word
+	return Array(anyWord);
 }
 
 function processAll(how) {
