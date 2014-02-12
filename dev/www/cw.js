@@ -127,7 +127,7 @@ function getAllWordsInClue(anyWord) {
 		}
 	}
 	//Single word
-	return Array(anyWord);
+	return words_in_clue[anyWord];
 }
 
 function processAll(how) {
