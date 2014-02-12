@@ -90,7 +90,7 @@ var words = {};
 
 function processOne(how) {
 	if (typeof(CrosswordData.active_word) != 'undefined' && CrosswordData.active_word != "" && lengths[CrosswordData.active_word]) {
-		for (index = 0; index < length[CrosswordData.active_word]; index++) {
+		for (index = 0; index < lengths[CrosswordData.active_word]; index++) {
 			letter = solutions[CrosswordData.active_word][index];
 			key = CrosswordData.active_word+"-"+(index+1);
 			if (how == 'cheat') {
