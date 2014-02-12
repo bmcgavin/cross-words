@@ -33,8 +33,8 @@ var inputBind = function(event)
 		//Uh-oh Android Chrome
 		// https://code.google.com/p/chromium/issues/detail?id=118639
 		//Get the contents of the input box and send that - send 8 if it's empty
-		content = CrosswordData.active_letter.value;
-		get_letter(content.toUpperCase());
+		content = this.value;
+		event.which = content.toUpperCase().charCodeAt(0);
 	}
 	if (event.which == CrosswordData.UP || event.which == CrosswordData.DOWN || event.which == CrosswordData.LEFT || event.which == CrosswordData.RIGHT) {
 		new_letter = getSpace(CrosswordData.active_letter, event.which);
