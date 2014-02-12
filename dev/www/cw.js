@@ -29,7 +29,13 @@ var inputBind = function(event)
 {
 	//$("div#information").html(//$("div#information").html()+new Date().getTime()+":CALL<br/>");
 	letter = CrosswordData.splitWordAndGetLetter();
-
+	if (event.which == 0) {
+		//Uh-oh Android Chrome
+		// https://code.google.com/p/chromium/issues/detail?id=118639
+		//Get the contents of the input box and send that - send 8 if it's empty
+		content = CrosswordData.active_letter.value;
+		get_letter(content.toUpperCase());
+	}
 	if (event.which == CrosswordData.UP || event.which == CrosswordData.DOWN || event.which == CrosswordData.LEFT || event.which == CrosswordData.RIGHT) {
 		new_letter = getSpace(CrosswordData.active_letter, event.which);
 		//$("div#information").html(//$("div#information").html()+new Date().getTime()+":NEW/OLD="+new_letter+"/"+CrosswordData.active_letter+"<br/>");
