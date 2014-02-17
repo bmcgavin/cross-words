@@ -53,7 +53,7 @@ var inputBind = function(event)
 		}
 		if (letter > 1) {
 			letter--;
-			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), active_word)
+			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), CrosswordData.active_word)
 		} else if (letter == 1 && allWordsInClue.length > 1) {
 			console.log("Old word");
             for (i in allWordsInClue) {
