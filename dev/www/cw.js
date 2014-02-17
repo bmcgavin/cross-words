@@ -82,13 +82,19 @@ var inputBind = function(event)
 		if (letter < lengths[CrosswordData.active_word]) {
 			letter++;
 			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), words_in_clue[CrosswordData.active_word]);
-		} else if (letter == lengths[CrosswordData.active_word] && words_in_clue[CrosswordData.active_word].length > 1) {
-			$(words_in_clue[CrosswordData.active_word]).each(function (key, word) {
-				if (word != CrosswordData.active_word) {
-					moveTo(word+"-1", CrosswordData.active_word);
-					return false;
-				}
-			});
+		} else if (letter == lengths[CrosswordData.active_word] && allWordsInClue.length > 1) {
+            for (i in allWordsInClue) {
+                if (allWordsInClue[i] == CrosswordData.active_word) {
+                    console.log("Got word : " + i);
+                    break;
+                }
+            }
+            if (i == allWordInClue.length) {
+                return false;
+            }
+            previous_word = allWordsInClue[i+1]
+            moveTo(previous_word+"-"+lengths[previous_word], CrosswordData.active_word);
+            return false;
 		}
 	}
 	return false;
