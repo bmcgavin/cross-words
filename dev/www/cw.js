@@ -95,7 +95,7 @@ var inputBind = function(event)
                 console.log(allWordsInClue.length)
                 return false;
             }
-            next_word = allWordsInClue[i.parseInt()+1]
+            next_word = allWordsInClue[parseInt(i)+1]
             moveTo(next_word+"-1", CrosswordData.active_word);
             return false;
 		}
