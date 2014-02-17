@@ -89,7 +89,7 @@ var inputBind = function(event)
                     break;
                 }
             }
-            if (i == allWordInClue.length) {
+            if (i == allWordsInClue.length) {
                 return false;
             }
             previous_word = allWordsInClue[i+1]
