@@ -89,10 +89,7 @@ var inputBind = function(event)
                     break;
                 }
             }
-            if (i == allWordsInClue.length) {
-                console.log("Returning false?")
-                console.log(i)
-                console.log(allWordsInClue.length)
+            if (i >= allWordsInClue.length - 1) {
                 return false;
             }
             next_word = allWordsInClue[parseInt(i)+1]
