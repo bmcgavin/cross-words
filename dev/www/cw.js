@@ -57,7 +57,7 @@ var inputBind = function(event)
 		} else if (letter == 1 && allWordsInClue.length > 1) {
 			console.log("Old word");
             for (i in allWordsInClue) {
-                if (allWordsInClue[i] == active_word) {
+                if (allWordsInClue[i] == CrosswordData.active_word) {
                     console.log("Got word : " + i);
                     break;
                 }
