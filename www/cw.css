@@ -11,6 +11,7 @@ div.right {
 	position: relative;
 	float:right;
 	z-index: 100;
+    max-width: 40%;
 }
 
 div#across {
@@ -37,6 +38,10 @@ div#crossword {
 
 div#active-clue {
 	font-size: 1.2em;
+}
+
+div#active-word {
+    position: relative;
 }
 
 div.hyphen-across {

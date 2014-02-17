@@ -19,12 +19,25 @@ function store() {
 	//submit an ajax request to flag this cookie as having completed this crossword
 	
 }
+
+function concentrate() {
+    //Remove the board, show a single clue and the layout (and any letters)
+    $("div#crossword").hide();
+} 
  
 var inputBind = function(event) 
 {
 	//$("div#information").html(//$("div#information").html()+new Date().getTime()+":CALL<br/>");
 	letter = CrosswordData.splitWordAndGetLetter();
-
+	if (event.which == 0) {
+		//Uh-oh Android Chrome
+		// https://code.google.com/p/chromium/issues/detail?id=118639
+		//Get the contents of the input box and send that - send 8 if it's empty
+		content = this.value;
+		event.which = content.toUpperCase().charCodeAt(0);
+	}
+    //Get ordered list of words in clue
+	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
 	if (event.which == CrosswordData.UP || event.which == CrosswordData.DOWN || event.which == CrosswordData.LEFT || event.which == CrosswordData.RIGHT) {
 		new_letter = getSpace(CrosswordData.active_letter, event.which);
 		//$("div#information").html(//$("div#information").html()+new Date().getTime()+":NEW/OLD="+new_letter+"/"+CrosswordData.active_letter+"<br/>");
@@ -40,15 +53,21 @@ var inputBind = function(event)
 		}
 		if (letter > 1) {
 			letter--;
-			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), words_in_clue[CrosswordData.active_word])
-		} else if (letter == 1 && words_in_clue[CrosswordData.active_word].length > 1) {
-			alert("Old word");
-			$(words_in_clue[CrosswordData.active_word]).each(function (key, word) {
-				if (word != CrosswordData.active_word) {
-					moveTo(word+"-"+lengths[word], CrosswordData.active_word);
-					return false;
-				}
-			});
+			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), CrosswordData.active_word)
+		} else if (letter == 1 && allWordsInClue.length > 1) {
+			console.log("Old word");
+            for (i in allWordsInClue) {
+                if (allWordsInClue[i] == CrosswordData.active_word) {
+                    console.log("Got word : " + i);
+                    break;
+                }
+            }
+            if (i == 0) {
+                return false;
+            }
+            previous_word = allWordsInClue[i-1]
+            moveTo(previous_word+"-"+lengths[previous_word], CrosswordData.active_word);
+            return false;
 		}
 	} else {
 		$("input#"+CrosswordData.active_letter).val(get_letter(event.which));
@@ -57,17 +76,23 @@ var inputBind = function(event)
 		}
 		//move CrosswordData.RIGHT/CrosswordData.DOWN for keypress, CrosswordData.UP/CrosswordData.LEFT for backspace
 		//$("div#information").html($("div#information").html()+new Date().getTime()+":LETT="+letter+"<br/>");
-		
+		//console.log(new Date().getTime()+":LETT="+letter);
+		console.log(new Date().getTime()+":WHICH="+event.which);
 		if (letter < lengths[CrosswordData.active_word]) {
 			letter++;
 			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), words_in_clue[CrosswordData.active_word]);
-		} else if (letter == lengths[CrosswordData.active_word] && words_in_clue[CrosswordData.active_word].length > 1) {
-			$(words_in_clue[CrosswordData.active_word]).each(function (key, word) {
-				if (word != CrosswordData.active_word) {
-					moveTo(word+"-1", CrosswordData.active_word);
-					return false;
-				}
-			});
+		} else if (letter == lengths[CrosswordData.active_word] && allWordsInClue.length > 1) {
+            for (i in allWordsInClue) {
+                if (allWordsInClue[i] == CrosswordData.active_word) {
+                    break;
+                }
+            }
+            if (i >= allWordsInClue.length - 1) {
+                return false;
+            }
+            next_word = allWordsInClue[parseInt(i)+1]
+            moveTo(next_word+"-1", CrosswordData.active_word);
+            return false;
 		}
 	}
 	return false;
@@ -76,10 +101,12 @@ var inputBind = function(event)
 var words = {};
 
 function processOne(how) {
-	if (typeof(CrosswordData.active_word) != 'undefined' && CrosswordData.active_word != "" && lengths[CrosswordData.active_word]) {
-		//for (i = 1; i <= lengths[CrosswordData.active_word]; i++) {
-		$.each(solutions[CrosswordData.active_word], function(index, letter) {
-			key = CrosswordData.active_word+"-"+(index+1);
+	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
+	for (i in allWordsInClue) {
+		currentWord = allWordsInClue[i];
+		for (index = 0; index < lengths[currentWord]; index++) {
+			letter = solutions[currentWord][index];
+			key = currentWord+"-"+(index+1);
 			if (how == 'cheat') {
 				$("input#"+key).val(letter);
 				if (intersections[key]) {
@@ -93,9 +120,26 @@ function processOne(how) {
 					}
 				}
 			}
-		});
-		//}
+		}
 	}
+}
+
+function getAllWordsInClue(anyWord) {
+	for (tmp in words_in_clue) {
+		if (typeof(words_in_clue[tmp]) != 'undefined') {
+			if (tmp != anyWord && words_in_clue[tmp].length > 1) {
+				for (tmptmp in words_in_clue[tmp]) {
+					if (typeof(words_in_clue[tmp][tmptmp]) != 'undefined') {
+						if (words_in_clue[tmp][tmptmp] == anyWord)	{
+							return words_in_clue[tmp];
+						}
+					}
+				}
+			}
+		}
+	}
+	//Single word
+	return words_in_clue[anyWord];
 }
 
 function processAll(how) {
@@ -185,15 +229,8 @@ function moveTo(new_letter, old_word) {
 }
 
 function clearAllExcept(exceptions) {
-	tmp = [];
-	if (typeof(exceptions) == 'object') {
-		tmp.push(exceptions[0]);
-	}
-	avoid = "not:(#"+tmp.join("):not:(#")+")";
-	$("div#crossword div:"+avoid+" > input").removeClass("highlight").css("z-index",split_word[0]);
-//.unbind('keyCrosswordData.UP');
-	avoid = "not:(#"+tmp.join("-clue):not:(#")+"-clue)";
-	$("div.clue:"+avoid).removeClass("darken");
+	$("div#crossword div > input.active").removeClass("highlight").css("z-index", '');
+	$("div.clue").removeClass("darken");
 }
 
 function highlightWord(word, letter) {
@@ -204,38 +241,19 @@ function highlightWord(word, letter) {
 	
 	clearAllExcept(words_in_clue[word]);
 	clue = "";
-	for (tmp in words_in_clue[word]) {
-		if (typeof(words_in_clue[word][tmp]) != 'undefined') {
-			//alert(words[word]);
-			$("div#"+words_in_clue[word][tmp]+".word input").addClass("highlight").css("z-index","99");
-			$("div#"+words_in_clue[word][tmp]+"-clue").addClass("darken");
-			clue += $("div#"+words_in_clue[word][tmp]+"-clue").html()+"\n</br>";
-		}
-	}
-	$("div#active-clue").html(clue);
 	//search through all of words_in_clue to see if this word is in any others
 	//TODO Make this a jQ method call so it can be incorporated into the backspace multi-word function above.
-	for (tmp in words_in_clue) {
-		if (typeof(words_in_clue[tmp]) != 'undefined') {
-			if (tmp != word && words_in_clue[tmp].length > 1) {
-				doneit = false;
-				for (tmptmp in words_in_clue[tmp]) {
-					if (typeof(words_in_clue[tmp][tmptmp]) != 'undefined') {
-						if (words_in_clue[tmp][tmptmp] == word)	{
-							for (doit in words_in_clue[tmp]) {
-								$("div#"+words_in_clue[tmp][doit]+".word input").addClass("highlight").css("z-index","99");
-								$("div#"+words_in_clue[tmp][doit]+"-clue").addClass("darken");
-								doneit = true;
-							}
-							if (doneit) {
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
+	allWordsInClue = getAllWordsInClue(word);
+	for (i in allWordsInClue) {
+		currentWord = allWordsInClue[i];
+		$("div#"+currentWord+".word input").addClass("highlight").css("z-index","99");
+		$("div#"+currentWord+"-clue").addClass("darken");
+		clue += $("div#"+currentWord+"-clue").html()+"\n</br>";
 	}
+	$("div#active-clue").html(clue);
+    //Concentration mode
+	//$("div#active-word").html($("div#" + word).html());
+    //$("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 }
 
 function get_letter(which) {

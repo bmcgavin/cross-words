@@ -212,14 +212,14 @@ EOF;
 	$word = $data['clue'];
 	if ($dir == 'across') {
 		$across .= <<< EOF
-	<div id="{$clue}-clue" class="clue">
+	<div id="{$clue}-clue" class="clue" onClick="highlightWord('{$clue}');">
 		{$num} : {$word}
 	</div>
 
 EOF;
 	} else if ($dir == 'down') {
 		$down .= <<< EOF
-	<div id="{$clue}-clue" class="clue">
+	<div id="{$clue}-clue" class="clue" onClick="highlightWord('{$clue}');">
 		{$num} : {$word}
 	</div>
 
@@ -238,7 +238,7 @@ $scripts = <<< EOF
 	{$solutions}
 	{$words_in_clue}
 	$().ready(function() {
-		$("input").keydown(inputBind);
+		$("input").keyup(inputBind);
 		CrosswordData.active_letter = "";
 		CrosswordData.active_word = "";
 		CrosswordData.LEFT = 37;
@@ -284,7 +284,8 @@ $output = <<< EOF
 			Experimental CW Generator
 		</title>
 		<link rel="stylesheet" type="text/css" href="cw.css"></link>
-		<script type="text/javascript" src="jquery-1.4.2.js"></script>
+		<!--<script type="text/javascript" src="jquery-1.4.2.js"></script>-->
+		<script type="text/javascript" src="jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="cw.js"></script>
 {$scripts}
 	</head>
@@ -298,6 +299,9 @@ $output = <<< EOF
 				<!-- <button id="store" name="store" value="store" onClick="store();">Store</button> -->
 			</div>
 			<div id="active-clue">
+				&nbsp;
+			</div>
+			<div id="active-word">
 				&nbsp;
 			</div>
 		</div>
