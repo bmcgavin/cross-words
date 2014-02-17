@@ -36,6 +36,8 @@ var inputBind = function(event)
 		content = this.value;
 		event.which = content.toUpperCase().charCodeAt(0);
 	}
+    //Get ordered list of words in clue
+	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
 	if (event.which == CrosswordData.UP || event.which == CrosswordData.DOWN || event.which == CrosswordData.LEFT || event.which == CrosswordData.RIGHT) {
 		new_letter = getSpace(CrosswordData.active_letter, event.which);
 		//$("div#information").html(//$("div#information").html()+new Date().getTime()+":NEW/OLD="+new_letter+"/"+CrosswordData.active_letter+"<br/>");
@@ -51,15 +53,21 @@ var inputBind = function(event)
 		}
 		if (letter > 1) {
 			letter--;
-			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), words_in_clue[CrosswordData.active_word])
-		} else if (letter == 1 && words_in_clue[CrosswordData.active_word].length > 1) {
-			alert("Old word");
-			$(words_in_clue[CrosswordData.active_word]).each(function (key, word) {
-				if (word != CrosswordData.active_word) {
-					moveTo(word+"-"+lengths[word], CrosswordData.active_word);
-					return false;
-				}
-			});
+			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), active_word)
+		} else if (letter == 1 && allWordsInClue.length > 1) {
+			console.log("Old word");
+            for (i in allWordsInClue) {
+                if (allWordsInClue[i] == active_word) {
+                    console.log("Got word : " + i);
+                    break;
+                }
+            }
+            if (i == 0) {
+                return false;
+            }
+            previous_word = allWordsInClue[i-1]
+            moveTo(previous_word+"-"+lengths[previous_word], CrosswordData.active_word);
+            return false;
 		}
 	} else {
 		$("input#"+CrosswordData.active_letter).val(get_letter(event.which));
