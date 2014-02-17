@@ -90,9 +90,12 @@ var inputBind = function(event)
                 }
             }
             if (i == allWordsInClue.length) {
+                console.log("Returning false?")
+                console.log(i)
+                console.log(allWordsInClue.length)
                 return false;
             }
-            next_word = allWordsInClue[i+1]
+            next_word = allWordsInClue[i.parseInt()+1]
             moveTo(next_word+"-1", CrosswordData.active_word);
             return false;
 		}
