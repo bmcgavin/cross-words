@@ -92,8 +92,8 @@ var inputBind = function(event)
             if (i == allWordsInClue.length) {
                 return false;
             }
-            previous_word = allWordsInClue[i+1]
-            moveTo(previous_word+"-"+lengths[previous_word], CrosswordData.active_word);
+            next_word = allWordsInClue[i+1]
+            moveTo(next_word+"-1", CrosswordData.active_word);
             return false;
 		}
 	}
