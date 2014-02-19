@@ -100,8 +100,8 @@ foreach($crossword as $clue => $data) {
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
             echo "<!-- traversed: $traversed -->\n";
-            if ($traversed > $data['length']) {
-                $traversed -= $data['length'];
+            if ($traversed > $crossword[$current_clue]['length']) {
+                $traversed -= $crossword[$current_clue]['length'];
                 echo "<!-- traversed-post-dec: $traversed -->\n";
                 foreach($extra_lengths as $extra_clue => $extra_length) {
                     if ($traversed > $extra_length) { 
