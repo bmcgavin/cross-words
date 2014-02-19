@@ -81,6 +81,7 @@ foreach($crossword as $clue => $data) {
 	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
+        echo "<!-- $clue : " . print_r($word_lengths, true) . "-->";
 		$data['word_boundaries'] = array();
 		$word_lengths = preg_split("/,/", $word_lengths[1][0]);
 		$traversed = 0;
