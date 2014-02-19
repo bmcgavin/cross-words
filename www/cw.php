@@ -93,12 +93,25 @@ foreach($crossword as $clue => $data) {
 		$data['word_boundaries'] = array();
 		$word_lengths = preg_split("/,/", $word_lengths[1][0]);
 		$traversed = 0;
+        $current_clue = $clue;
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
             if ($traversed > $data['length']) {
+                $traversed -= $data['length'];
                 foreach($extra_lengths as $extra_clue => $extra_length) {
+                    if ($traversed > $extra_length) { 
+                        $traversed -= $extra_length;
+                    } else {
+                        $current_clue = $extra_clue;
+                        break;
+                    }
                     
                 }
+                if (!array_key_exists('word_boundaries', $crossword[$current_clue])) {
+                    $crossword[$current_clue]['word_boundaries'] = array();
+                }
+                $crossword[$current_clue]['word_boundaries'][] = $traversed;
+
             }
             $data['word_boundaries'][] = $traversed;
 		}
