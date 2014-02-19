@@ -85,9 +85,9 @@ foreach($crossword as $clue => $data) {
         $extras = preg_split("/,/", $data['extra']);
         foreach($extras as $extra_clue) {
             $extra_lengths[$extra_clue] = $crossword[$extra_clue]['length'];
-            echo "<!-- 'extra lengths: " . print_r($extra_lengths, true) . "-->";
         }
     }
+    echo "<!-- 'extra lengths: " . print_r($extra_lengths, true) . "-->";
 
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
@@ -110,6 +110,7 @@ foreach($crossword as $clue => $data) {
                     } else {
                         $current_clue = $extra_clue;
                         echo "<!-- current_clue: $current_clue -->\n";
+                        array_shift($extra_lengths);
                         break;
                     }
                     
