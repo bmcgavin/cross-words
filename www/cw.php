@@ -91,10 +91,12 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
             $extra_lengths[$extra_clue] = $crossword[$extra_clue]['length'];
         }
     }
+    echo "<!-- 'extra lengths: " . print_r($extra_lengths, true) . "-->";
 
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
         if (!array_key_exists('word_boundaries', $data)) {
+            echo "<!-- $clue : resetting word boundaries -->\n";
             $data['word_boundaries'] = array();
         }
 		$word_lengths = preg_split("/,/", $word_lengths[1][0]);
@@ -102,13 +104,17 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
         $current_clue = $clue;
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
+            echo "<!-- traversed: $traversed -->\n";
             if ($traversed > $crossword[$current_clue]['length']) {
                 $traversed -= $crossword[$current_clue]['length'];
+                echo "<!-- traversed-post-dec: $traversed -->\n";
                 foreach($extra_lengths as $extra_clue => $extra_length) {
                     if ($traversed > $extra_length) { 
                         $traversed -= $extra_length;
+                        echo "<!-- traversed-post-extra-dec: $traversed -->\n";
                     } else {
                         $current_clue = $extra_clue;
+                        echo "<!-- current_clue: $current_clue -->\n";
                         array_shift($extra_lengths);
                         break;
                     }
@@ -117,23 +123,59 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
                 if (!array_key_exists('word_boundaries', $crossword[$current_clue])) {
                     $crossword[$current_clue]['word_boundaries'] = array();
                 }
+                echo "<!-- setting : $current_clue [ $traversed ]-->\n";
 
                 $crossword[$current_clue]['word_boundaries'][] = $traversed;
+                echo "<!-- " . print_r($crossword[$current_clue], true) . "-->\n";
 
             }
             if ($clue == $current_clue) {
+                echo "<!-- setting (old) : $traversed -->\n";
                 $data['word_boundaries'][] = $traversed;
             }
 		}
 	}
+    echo "<!-- $clue : " . print_r($data, true) . "-->\n";
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
-		$data['word_hyphens'] = array();
-		$word_lengths = preg_split("/\-/", $word_lengths[1][0]);
+        if (!array_key_exists('word_hyphens', $data)) {
+            echo "<!-- $clue : resetting word hyphens -->\n";
+            $data['word_hyphens'] = array();
+        }
+		$word_lengths = preg_split("/-/", $word_lengths[1][0]);
 		$traversed = 0;
+        $current_clue = $clue;
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
-			$data['word_hyphens'][] = $traversed;
+            echo "<!-- traversed: $traversed -->\n";
+            if ($traversed > $crossword[$current_clue]['length']) {
+                $traversed -= $crossword[$current_clue]['length'];
+                echo "<!-- traversed-post-dec: $traversed -->\n";
+                foreach($extra_lengths as $extra_clue => $extra_length) {
+                    if ($traversed > $extra_length) { 
+                        $traversed -= $extra_length;
+                        echo "<!-- traversed-post-extra-dec: $traversed -->\n";
+                    } else {
+                        $current_clue = $extra_clue;
+                        echo "<!-- current_clue: $current_clue -->\n";
+                        array_shift($extra_lengths);
+                        break;
+                    }
+                    
+                }
+                if (!array_key_exists('word_hyphens', $crossword[$current_clue])) {
+                    $crossword[$current_clue]['word_hyphens'] = array();
+                }
+                echo "<!-- setting : $current_clue [ $traversed ]-->\n";
+
+                $crossword[$current_clue]['word_hyphens'][] = $traversed;
+                echo "<!-- " . print_r($crossword[$current_clue], true) . "-->\n";
+
+            }
+            if ($clue == $current_clue) {
+                echo "<!-- setting (old) : $traversed -->\n";
+                $data['word_hyphens'][] = $traversed;
+            }
 		}
 	}
 	
