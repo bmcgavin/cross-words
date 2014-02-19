@@ -47,7 +47,11 @@ $scripts = "";
 $across = "";
 $down = "";
 
-foreach($crossword as $clue => $data) {
+$clues = array_keys($crossword);
+
+for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
+    $clue = $clues[$indexomatic];
+    $data = $crossword[$clue];
 	$data['clue'] = str_replace(array("\xe2\x80\x94", "\xe2\x80\x93"), '-', $data['clue']);
 	$data['clue'] = str_replace('?', '?', $data['clue']);
 	$data['clue'] = str_replace('’', '\'', $data['clue']);
@@ -79,16 +83,48 @@ foreach($crossword as $clue => $data) {
 		$length += $tmp;
 	}
 	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
+
+    $extra_lengths = array();
+    if (array_key_exists('extra', $data)) {
+        $extras = preg_split("/,/", $data['extra']);
+        foreach($extras as $extra_clue) {
+            $extra_lengths[$extra_clue] = $crossword[$extra_clue]['length'];
+        }
+    }
+
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
-		$data['word_boundaries'] = array();
+        if (!array_key_exists('word_boundaries', $data)) {
+            $data['word_boundaries'] = array();
+        }
 		$word_lengths = preg_split("/,/", $word_lengths[1][0]);
 		$traversed = 0;
+        $current_clue = $clue;
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
-			$data['word_boundaries'][] = $traversed;
+            if ($traversed > $crossword[$current_clue]['length']) {
+                $traversed -= $crossword[$current_clue]['length'];
+                foreach($extra_lengths as $extra_clue => $extra_length) {
+                    if ($traversed > $extra_length) { 
+                        $traversed -= $extra_length;
+                    } else {
+                        $current_clue = $extra_clue;
+                        array_shift($extra_lengths);
+                        break;
+                    }
+                    
+                }
+                if (!array_key_exists('word_boundaries', $crossword[$current_clue])) {
+                    $crossword[$current_clue]['word_boundaries'] = array();
+                }
+
+                $crossword[$current_clue]['word_boundaries'][] = $traversed;
+
+            }
+            if ($clue == $current_clue) {
+                $data['word_boundaries'][] = $traversed;
+            }
 		}
-		
 	}
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
