@@ -50,6 +50,7 @@ $down = "";
 $clues = array_keys($crossword);
 
 foreach($crossword as $clue => $data) {
+    echo "<!-- start $clue : " . print_r($data, true) . "-->\n";
 	$data['clue'] = str_replace(array("\xe2\x80\x94", "\xe2\x80\x93"), '-', $data['clue']);
 	$data['clue'] = str_replace('?', '?', $data['clue']);
 	$data['clue'] = str_replace('’', '\'', $data['clue']);
@@ -134,7 +135,6 @@ foreach($crossword as $clue => $data) {
 		}
 	}
     echo "<!-- $clue : " . print_r($data, true) . "-->\n";
-    echo "<!-- " . print_r($crossword, true) . "-->\n";
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
 		$data['word_hyphens'] = array();
