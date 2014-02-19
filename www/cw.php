@@ -115,6 +115,7 @@ foreach($crossword as $clue => $data) {
                 if (!array_key_exists('word_boundaries', $crossword[$current_clue])) {
                     $crossword[$current_clue]['word_boundaries'] = array();
                 }
+                echo "<!-- setting : $current_clue [ $traversed ]-->\n";
                 $crossword[$current_clue]['word_boundaries'][] = $traversed;
 
             } else {
