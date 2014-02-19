@@ -79,19 +79,31 @@ foreach($crossword as $clue => $data) {
 		$length += $tmp;
 	}
 	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
+
+    $extra_lengths = array();
+    if (array_key_exists('extra', $data)) {
+        $extras = preg_split("/,/", $data['extra']);
+        foreach($extras as $extra_clue) {
+            $extra_lengths[$extra_clue] = $data[$extra_clue]['length'];
+        }
+    }
+
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
-        echo "<!-- $clue : " . print_r($word_lengths, true) . "-->";
-        echo "<!-- $clue : " . print_r($data['extra'], true) . "-->";
 		$data['word_boundaries'] = array();
 		$word_lengths = preg_split("/,/", $word_lengths[1][0]);
 		$traversed = 0;
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
-			$data['word_boundaries'][] = $traversed;
+            if ($traversed > $data['length']) {
+                foreach($extra_lengths as $extra_clue => $extra_length) {
+                    
+                }
+            }
+            $data['word_boundaries'][] = $traversed;
 		}
-		
 	}
+    echo "<!-- $clue : " . print_r($data, true) . "-->";
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
 		$data['word_hyphens'] = array();
