@@ -49,7 +49,10 @@ $down = "";
 
 $clues = array_keys($crossword);
 
-foreach($crossword as $clue => $data) {
+//foreach($crossword as $clue => $data) {
+for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
+    $clue = $clues[$indexomatic];
+    $data = $crossword[$clue];
     echo "<!-- start $clue : " . print_r($data, true) . "-->\n";
 	$data['clue'] = str_replace(array("\xe2\x80\x94", "\xe2\x80\x93"), '-', $data['clue']);
 	$data['clue'] = str_replace('?', '?', $data['clue']);
