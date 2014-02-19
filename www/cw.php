@@ -128,12 +128,13 @@ foreach($crossword as $clue => $data) {
 
             }
             if ($clue == $current_clue) {
-                echo "<!-- setting (old) : $traversed -->";
+                echo "<!-- setting (old) : $traversed -->\n";
                 $data['word_boundaries'][] = $traversed;
             }
 		}
 	}
-    echo "<!-- $clue : " . print_r($data, true) . "-->";
+    echo "<!-- $clue : " . print_r($data, true) . "-->\n";
+    echo "<!-- " . print_r($crossword, true) . "-->\n";
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
 		$data['word_hyphens'] = array();
