@@ -123,6 +123,7 @@ foreach($crossword as $clue => $data) {
                 echo "<!-- setting : $current_clue [ $traversed ]-->\n";
 
                 $crossword[$current_clue]['word_boundaries'][] = $traversed;
+                echo "<!-- " . print_r($crossword[$current_clue], true) . "-->\n";
 
             }
             if ($clue == $current_clue) {
