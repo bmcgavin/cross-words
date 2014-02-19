@@ -118,7 +118,6 @@ foreach($crossword as $clue => $data) {
                 $crossword[$current_clue]['word_boundaries'][] = $traversed;
 
             }
-            $data['word_boundaries'][] = $traversed;
 		}
 	}
     echo "<!-- $clue : " . print_r($data, true) . "-->";
