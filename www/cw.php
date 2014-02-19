@@ -85,6 +85,7 @@ foreach($crossword as $clue => $data) {
         $extras = preg_split("/,/", $data['extra']);
         foreach($extras as $extra_clue) {
             $extra_lengths[$extra_clue] = $data[$extra_clue]['length'];
+            echo "<!-- 'extra lengths: " . print_r($extra_lengths, true) . "-->";
         }
     }
 
@@ -96,17 +97,17 @@ foreach($crossword as $clue => $data) {
         $current_clue = $clue;
 		foreach($word_lengths as $word_length) {
 			$traversed += $word_length;
-            echo "<-- traversed: $traversed -->\n";
+            echo "<!-- traversed: $traversed -->\n";
             if ($traversed > $data['length']) {
                 $traversed -= $data['length'];
-                echo "<-- traversed-post-dec: $traversed -->\n";
+                echo "<!-- traversed-post-dec: $traversed -->\n";
                 foreach($extra_lengths as $extra_clue => $extra_length) {
                     if ($traversed > $extra_length) { 
                         $traversed -= $extra_length;
-                        echo "<-- traversed-post-extra-dec: $traversed -->\n";
+                        echo "<!-- traversed-post-extra-dec: $traversed -->\n";
                     } else {
                         $current_clue = $extra_clue;
-                        echo "<-- current_clue: $current_clue -->\n";
+                        echo "<!-- current_clue: $current_clue -->\n";
                         break;
                     }
                     
