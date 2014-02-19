@@ -124,9 +124,10 @@ foreach($crossword as $clue => $data) {
 
                 $crossword[$current_clue]['word_boundaries'][] = $traversed;
 
-            } else {
+            }
+            if ($clue == $current_clue) {
                 echo "<!-- setting (old) : $traversed -->";
-                //$data['word_boundaries'][] = $traversed;
+                $data['word_boundaries'][] = $traversed;
             }
 		}
 	}
