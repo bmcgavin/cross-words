@@ -84,7 +84,7 @@ foreach($crossword as $clue => $data) {
     if (array_key_exists('extra', $data)) {
         $extras = preg_split("/,/", $data['extra']);
         foreach($extras as $extra_clue) {
-            $extra_lengths[$extra_clue] = $data[$extra_clue]['length'];
+            $extra_lengths[$extra_clue] = $crossword[$extra_clue]['length'];
             echo "<!-- 'extra lengths: " . print_r($extra_lengths, true) . "-->";
         }
     }
