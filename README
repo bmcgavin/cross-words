@@ -1,4 +1,3 @@
-
 Experimental PHP/JS crossword engine.
 
 Make a crossword in a simple .ini format, and the PHP script will make
