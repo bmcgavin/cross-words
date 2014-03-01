@@ -212,6 +212,9 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 	
 EOF;
 	$done = false;
+    if ($clue == '28-across') {
+        print_r($data);
+    }
 	for($i = 0; $i < $length; $i++) {
 		$letter = $i+1;
 		$class = "active";
