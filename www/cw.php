@@ -119,13 +119,13 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
                 }
 
                 $crossword[$current_clue]['word_boundaries'][] = $traversed;
+                echo "<!-- $current_clue : " . print_r($crossword[$current_clue], true) . "-->";
 
             }
             if ($clue == $current_clue) {
                 $data['word_boundaries'][] = $traversed;
             }
 		}
-        echo "<!-- $clue : " . print_r($data, true) . "-->";
 	}
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
