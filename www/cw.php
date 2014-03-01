@@ -182,7 +182,13 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 	}
 	$words_in_clue .= "words_in_clue[\"{$clue}\"] = ['{$clue}'{$extra}];\n";
 
-		
+} // end of preprocessing loop
+
+//Now we can output it!
+for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
+    $clue = $clues[$indexomatic];
+    $data = $crossword[$clue];
+
     $dir = null;
 	list($num, $dir) = preg_split("/-/", $clue);
     if ($dir == null) {
@@ -212,9 +218,6 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 	
 EOF;
 	$done = false;
-    if ($clue == '28-across') {
-        print_r($data);
-    }
 	for($i = 0; $i < $length; $i++) {
 		$letter = $i+1;
 		$class = "active";
