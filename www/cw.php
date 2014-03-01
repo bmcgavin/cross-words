@@ -125,6 +125,7 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
                 $data['word_boundaries'][] = $traversed;
             }
 		}
+        echo "<!-- " . print_r($data, true) . "-->";
 	}
 	//get the words length from the clue
 	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
