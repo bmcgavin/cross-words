@@ -49,39 +49,11 @@ $down = "";
 
 $clues = array_keys($crossword);
 
+/**
+ * process boundaries here
+ */
 for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
     $clue = $clues[$indexomatic];
-	$crossword[$clue]['clue'] = str_replace(array("\xe2\x80\x94", "\xe2\x80\x93"), '-', $crossword[$clue]['clue']);
-	$crossword[$clue]['clue'] = str_replace('?', '?', $crossword[$clue]['clue']);
-	$crossword[$clue]['clue'] = str_replace('’', '\'', $crossword[$clue]['clue']);
-	$crossword[$clue]['clue'] = str_replace("\xc2\xad", '', $crossword[$clue]['clue']);
-	$crossword[$clue]['clue'] = str_replace("\xc2\xa0", ' ', $crossword[$clue]['clue']);
-	$crossword[$clue]['clue'] = str_replace("\xe2\x80\xa6", '...', $crossword[$clue]['clue']);
-	//build the actual length
-	/* TODO
-	 * There's a problem here if the number of words in the solution
-	 * exceeds the number of word-spaces in the grid.
-	 * if count($extra)+1 > count(number of commas in length+1)
-	 *   do a grid walk to find the furthest we can go from here
-	 *   (i.e. stop and rewind two when we find a clue going in the
-	 *    same direction)
-	 * unless we munge the length reported in the clue instead...
-	 */
-	
-	$display_length = $crossword[$clue]['length'];
-	if (is_numeric($crossword[$clue]['length'])) {
-		$length = $crossword[$clue]['length'];
-	} else {
-		$length = 0;
-		$tmp = $crossword[$clue]['length'];
-		while (substr($tmp, 0, strpos($tmp, ',')) > 0) {
-			$length += $tmp;
-			$crossword[$clue]['ends'][$length] = true;
-			$tmp = substr($tmp, strpos($tmp, ",")+1);
-		}
-		$length += $tmp;
-	}
-	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
 
     $extra_lengths = array();
     if (array_key_exists('extra', $crossword[$clue])) {
@@ -92,14 +64,32 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
     }
 
 	//get the words length from the clue
-	if (preg_match_all("/\(([0-9,?]+)\)/", $crossword[$clue]['clue'], $word_lengths)) {
+	if (preg_match_all("/\(([0-9(,\-)?]+)\)/", $crossword[$clue]['clue'], $word_lengths)) {
         if (!array_key_exists('word_boundaries', $crossword[$clue])) {
             $crossword[$clue]['word_boundaries'] = array();
         }
-		$word_lengths = preg_split("/,/", $word_lengths[1][0]);
+        //Pure comma / hyphen
+        if (!strstr($word_lengths[1][0],'-')) {
+            $word_lengths = preg_split("/,/", $word_lengths[1][0]);
+            $delimiter_type = 'comma';
+        } else if (!strstr($word_lengths[1][0],',')) {
+            $word_lengths = preg_split("/-/", $word_lengths[1][0]);
+            $delimiter_type = 'hyphen';
+        } else {
+            //Split on comma but be prepared for hyphens
+            $word_lengths = preg_split("/,/", $word_lengths[1][0]);
+            $delimiter_type = 'comma';
+        }
+
 		$traversed = 0;
         $current_clue = $clue;
-		foreach($word_lengths as $word_length) {
+        for($position = 0; $position < count($word_lengths); $position++) {
+            $word_length = $word_lengths[$position];
+            if (!is_numeric($word_length)) {
+                //Other delimiter - insert after current length
+                $still_delimited = preg_split("/-/", $word_length);
+                $word_lengths = array_splice($word_lengths, $position, 0, $still_delimited);
+            }
 			$traversed += $word_length;
             if ($traversed > $crossword[$current_clue]['length']) {
                 $traversed -= $crossword[$current_clue]['length'];
@@ -116,64 +106,73 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
                 if (!array_key_exists('word_boundaries', $crossword[$current_clue])) {
                     $crossword[$current_clue]['word_boundaries'] = array();
                 }
+                if (!array_key_exists('word_boundary_type', $crossword[$current_clue])) {
+                    $crossword[$current_clue]['word_boundary_type'] = array();
+                }
 
                 $crossword[$current_clue]['word_boundaries'][] = $traversed;
+                $crossword[$current_clue]['word_boundary_type'][] = $delimiter_type;
                 echo "<!-- $current_clue : " . print_r($crossword[$current_clue], true) . "-->";
 
             }
             if ($clue == $current_clue) {
                 $crossword[$clue]['word_boundaries'][] = $traversed;
+                $crossword[$clue]['word_boundary_type'][] = $delimiter_type;
             }
 		}
 	}
-	//get the words length from the clue
-	if (preg_match_all("/\(([0-9\-?]+)\)/", $crossword[$clue]['clue'], $word_lengths)) {
-        if (!array_key_exists('word_hyphens', $crossword[$clue])) {
-            $crossword[$clue]['word_hyphens'] = array();
-        }
-		$word_lengths = preg_split("/-/", $word_lengths[1][0]);
-		$traversed = 0;
-        $current_clue = $clue;
-		foreach($word_lengths as $word_length) {
-			$traversed += $word_length;
-            if ($traversed > $crossword[$current_clue]['length']) {
-                $traversed -= $crossword[$current_clue]['length'];
-                foreach($extra_lengths as $extra_clue => $extra_length) {
-                    if ($traversed > $extra_length) { 
-                        $traversed -= $extra_length;
-                    } else {
-                        $current_clue = $extra_clue;
-                        array_shift($extra_lengths);
-                        break;
-                    }
-                    
-                }
-                if (!array_key_exists('word_hyphens', $crossword[$current_clue])) {
-                    $crossword[$current_clue]['word_hyphens'] = array();
-                }
+}
 
-                $crossword[$current_clue]['word_hyphens'][] = $traversed;
-
-            }
-            if ($clue == $current_clue) {
-                $crossword[$clue]['word_hyphens'][] = $traversed;
-            }
-		}
-	}
+for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
+    $clue = $clues[$indexomatic];
+    $data = $crossword[$clue];
+	$data['clue'] = str_replace(array("\xe2\x80\x94", "\xe2\x80\x93"), '-', $data['clue']);
+	$data['clue'] = str_replace('?', '?', $data['clue']);
+	$data['clue'] = str_replace('’', '\'', $data['clue']);
+	$data['clue'] = str_replace("\xc2\xad", '', $data['clue']);
+	$data['clue'] = str_replace("\xc2\xa0", ' ', $data['clue']);
+	$data['clue'] = str_replace("\xe2\x80\xa6", '...', $data['clue']);
+	//build the actual length
+	/* TODO
+	 * There's a problem here if the number of words in the solution
+	 * exceeds the number of word-spaces in the grid.
+	 * if count($extra)+1 > count(number of commas in length+1)
+	 *   do a grid walk to find the furthest we can go from here
+	 *   (i.e. stop and rewind two when we find a clue going in the
+	 *    same direction)
+	 * unless we munge the length reported in the clue instead...
+	 */
 	
-	if (array_key_exists('solution', $crossword[$clue])) {
+	$display_length = $data['length'];
+	if (is_numeric($data['length'])) {
+		$length = $data['length'];
+	} else {
+		$length = 0;
+		$tmp = $data['length'];
+		while (substr($tmp, 0, strpos($tmp, ',')) > 0) {
+			$length += $tmp;
+			$data['ends'][$length] = true;
+			$tmp = substr($tmp, strpos($tmp, ",")+1);
+		}
+		$length += $tmp;
+	}
+	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
+
+
+	
+	if (array_key_exists('solution', $data)) {
 		//try to speed up the solutions / check all buttons
 		/*
-		for($i = 1; $i <= strlen($crossword[$clue]['solution']); $i++) {
-			$solutions .= "solutions[\"{$clue}-{$i}\"] = '".$crossword[$clue]['solution'][$i-1]."';\n";
+		for($i = 1; $i <= strlen($data['solution']); $i++) {
+			$solutions .= "solutions[\"{$clue}-{$i}\"] = '".$data['solution'][$i-1]."';\n";
 		}
 		*/
-		$solutions .= "solutions[\"{$clue}\"] = '".$crossword[$clue]['solution']."';\n";
+		$solutions .= "solutions[\"{$clue}\"] = '".$data['solution']."';\n";
 	}
 
 	$extra = "";
-	if (array_key_exists('extra', $crossword[$clue])) {
-		$prexes = preg_split('/,/', $crossword[$clue]['extra']);
+	if (array_key_exists('extra', $data)) {
+		$prexes = preg_split('/,/', $data['extra']);
 		foreach($prexes as $prex) {
 			$extra .= ", '".$prex."'";
 				
@@ -181,13 +180,7 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 	}
 	$words_in_clue .= "words_in_clue[\"{$clue}\"] = ['{$clue}'{$extra}];\n";
 
-} // end of preprocessing loop
-
-//Now we can output it!
-for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
-    $clue = $clues[$indexomatic];
-    $data = $crossword[$clue];
-
+		
     $dir = null;
 	list($num, $dir) = preg_split("/-/", $clue);
     if ($dir == null) {
