@@ -51,13 +51,12 @@ $clues = array_keys($crossword);
 
 for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
     $clue = $clues[$indexomatic];
-    $data = $crossword[$clue];
-	$data['clue'] = str_replace(array("\xe2\x80\x94", "\xe2\x80\x93"), '-', $data['clue']);
-	$data['clue'] = str_replace('?', '?', $data['clue']);
-	$data['clue'] = str_replace('’', '\'', $data['clue']);
-	$data['clue'] = str_replace("\xc2\xad", '', $data['clue']);
-	$data['clue'] = str_replace("\xc2\xa0", ' ', $data['clue']);
-	$data['clue'] = str_replace("\xe2\x80\xa6", '...', $data['clue']);
+	$crossword[$clue]['clue'] = str_replace(array("\xe2\x80\x94", "\xe2\x80\x93"), '-', $crossword[$clue]['clue']);
+	$crossword[$clue]['clue'] = str_replace('?', '?', $crossword[$clue]['clue']);
+	$crossword[$clue]['clue'] = str_replace('’', '\'', $crossword[$clue]['clue']);
+	$crossword[$clue]['clue'] = str_replace("\xc2\xad", '', $crossword[$clue]['clue']);
+	$crossword[$clue]['clue'] = str_replace("\xc2\xa0", ' ', $crossword[$clue]['clue']);
+	$crossword[$clue]['clue'] = str_replace("\xe2\x80\xa6", '...', $crossword[$clue]['clue']);
 	//build the actual length
 	/* TODO
 	 * There's a problem here if the number of words in the solution
@@ -69,15 +68,15 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 	 * unless we munge the length reported in the clue instead...
 	 */
 	
-	$display_length = $data['length'];
-	if (is_numeric($data['length'])) {
-		$length = $data['length'];
+	$display_length = $crossword[$clue]['length'];
+	if (is_numeric($crossword[$clue]['length'])) {
+		$length = $crossword[$clue]['length'];
 	} else {
 		$length = 0;
-		$tmp = $data['length'];
+		$tmp = $crossword[$clue]['length'];
 		while (substr($tmp, 0, strpos($tmp, ',')) > 0) {
 			$length += $tmp;
-			$data['ends'][$length] = true;
+			$crossword[$clue]['ends'][$length] = true;
 			$tmp = substr($tmp, strpos($tmp, ",")+1);
 		}
 		$length += $tmp;
@@ -85,17 +84,17 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 	$lengths .= "lengths[\"{$clue}\"] = {$length};\n";
 
     $extra_lengths = array();
-    if (array_key_exists('extra', $data)) {
-        $extras = preg_split("/,/", $data['extra']);
+    if (array_key_exists('extra', $crossword[$clue])) {
+        $extras = preg_split("/,/", $crossword[$clue]['extra']);
         foreach($extras as $extra_clue) {
             $extra_lengths[$extra_clue] = $crossword[$extra_clue]['length'];
         }
     }
 
 	//get the words length from the clue
-	if (preg_match_all("/\(([0-9,?]+)\)/", $data['clue'], $word_lengths)) {
-        if (!array_key_exists('word_boundaries', $data)) {
-            $data['word_boundaries'] = array();
+	if (preg_match_all("/\(([0-9,?]+)\)/", $crossword[$clue]['clue'], $word_lengths)) {
+        if (!array_key_exists('word_boundaries', $crossword[$clue])) {
+            $crossword[$clue]['word_boundaries'] = array();
         }
 		$word_lengths = preg_split("/,/", $word_lengths[1][0]);
 		$traversed = 0;
@@ -123,14 +122,14 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 
             }
             if ($clue == $current_clue) {
-                $data['word_boundaries'][] = $traversed;
+                $crossword[$clue]['word_boundaries'][] = $traversed;
             }
 		}
 	}
 	//get the words length from the clue
-	if (preg_match_all("/\(([0-9\-?]+)\)/", $data['clue'], $word_lengths)) {
-        if (!array_key_exists('word_hyphens', $data)) {
-            $data['word_hyphens'] = array();
+	if (preg_match_all("/\(([0-9\-?]+)\)/", $crossword[$clue]['clue'], $word_lengths)) {
+        if (!array_key_exists('word_hyphens', $crossword[$clue])) {
+            $crossword[$clue]['word_hyphens'] = array();
         }
 		$word_lengths = preg_split("/-/", $word_lengths[1][0]);
 		$traversed = 0;
@@ -157,24 +156,24 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 
             }
             if ($clue == $current_clue) {
-                $data['word_hyphens'][] = $traversed;
+                $crossword[$clue]['word_hyphens'][] = $traversed;
             }
 		}
 	}
 	
-	if (array_key_exists('solution', $data)) {
+	if (array_key_exists('solution', $crossword[$clue])) {
 		//try to speed up the solutions / check all buttons
 		/*
-		for($i = 1; $i <= strlen($data['solution']); $i++) {
-			$solutions .= "solutions[\"{$clue}-{$i}\"] = '".$data['solution'][$i-1]."';\n";
+		for($i = 1; $i <= strlen($crossword[$clue]['solution']); $i++) {
+			$solutions .= "solutions[\"{$clue}-{$i}\"] = '".$crossword[$clue]['solution'][$i-1]."';\n";
 		}
 		*/
-		$solutions .= "solutions[\"{$clue}\"] = '".$data['solution']."';\n";
+		$solutions .= "solutions[\"{$clue}\"] = '".$crossword[$clue]['solution']."';\n";
 	}
 
 	$extra = "";
-	if (array_key_exists('extra', $data)) {
-		$prexes = preg_split('/,/', $data['extra']);
+	if (array_key_exists('extra', $crossword[$clue])) {
+		$prexes = preg_split('/,/', $crossword[$clue]['extra']);
 		foreach($prexes as $prex) {
 			$extra .= ", '".$prex."'";
 				
