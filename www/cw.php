@@ -214,7 +214,9 @@ EOF;
 		$letter = $i+1;
 		$class = "active";
 		if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
-			$class .= " end-".$dir;
+            if ($data['word_boundary_type'][$letter] == 'comma') {
+                $class .= " end-".$dir;
+            }
 		}
 		$id = $clue."-".$letter;
 		$clue_top = 0;
@@ -250,17 +252,19 @@ EOF;
 		<input maxlength="1" type="text" id="{$id}" class="{$class}" style="top:{$clue_top}px; left:{$clue_left}px;" onfocus="highlightWord('{$clue}', '{$letter}');"></input>
 
 EOF;
-		if (array_key_exists('word_hyphens', $data) && in_array($letter, $data['word_hyphens']) && $letter != $length) {
-			//OUTPUT A HYPHEN DIV
-			if ($dir == 'across') {
-				$style = "left:".($clue_left+(SQUARE_SIZE-5))."px";
-			} else if ($dir == 'down') {
-				$style = "top:".($clue_top+(SQUARE_SIZE-5))."px";
-			}
-			$output .= <<< EOF
+		if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
+            if ($data['word_boundary_type'][$letter] == 'hyphen') {
+                //OUTPUT A HYPHEN DIV
+                if ($dir == 'across') { 
+                    $style = "left:".($clue_left+(SQUARE_SIZE-5))."px";
+                } else if ($dir == 'down') {
+                    $style = "top:".($clue_top+(SQUARE_SIZE-5))."px";
+                }
+                $output .= <<< EOF
 			<div class="hyphen-{$dir}" style="{$style};">&nbsp;</div>
 
 EOF;
+            }
 		}
 		
 	}
