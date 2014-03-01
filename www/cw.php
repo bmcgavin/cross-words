@@ -214,7 +214,8 @@ EOF;
 		$letter = $i+1;
 		$class = "active";
 		if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
-            if ($data['word_boundary_type'][$letter] == 'comma') {
+            $pos = array_search($letter, $data['word_boundaries']);
+            if ($data['word_boundary_type'][$pos] == 'comma') {
                 $class .= " end-".$dir;
             }
 		}
@@ -253,7 +254,8 @@ EOF;
 
 EOF;
 		if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
-            if ($data['word_boundary_type'][$letter] == 'hyphen') {
+            $pos = array_search($letter, $data['word_boundaries']);
+            if ($data['word_boundary_type'][$pos] == 'hyphen') {
                 //OUTPUT A HYPHEN DIV
                 if ($dir == 'across') { 
                     $style = "left:".($clue_left+(SQUARE_SIZE-5))."px";
