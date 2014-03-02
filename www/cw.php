@@ -125,6 +125,8 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 	}
 }
 
+echo '<!-- ' . print_r($crosswords, true) . '-->';
+
 for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
     $clue = $clues[$indexomatic];
     $data = $crossword[$clue];
