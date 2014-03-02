@@ -135,7 +135,7 @@ function concentrate() {
         triple[2] = parseInt(triple[2]) + 1000;
         value.id = triple.join("-");
         $("div#"+value.id).removeAttr('onfocus');
-        $("div#"+value.id).focus(highlightWord(triple[0]+"-"+triple[1], triple[2]))
+        $("div#"+value.id).focusin(highlightWord(triple[0]+"-"+triple[1], triple[2]))
     })
     $("div#active-word :input").keyup(inputBind);
     triple = CrosswordData.active_letter.split("-");
