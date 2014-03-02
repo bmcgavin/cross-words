@@ -128,10 +128,22 @@ function concentrate() {
     //$("div#crossword").hide();
     //Concentration mode
     //Get ordered list of words in clue
+    if (CrosswordData.concentration) {
+        $("div#" + CrosswordData.active_word).html($("div#active-word").html())
+        CrosswordData.concentration = false
+        $("div#active-word").html("")
+        return
+    }
     CrosswordData.concentration = true
 	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
 	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
     $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind).removeAttr('id');
+    tmp = CrosswordData.active_word.split("-")
+    if (tmp[1] == "down") {
+        $("div#active-word :input").removeClass("end-across")
+    } else if (tmp[1] == "across") {
+        $("div#active-word :input").removeClass("end-down")
+    }
     /*
     $("div#active-word :input").each(function(index, value) {
         triple = value.id.split('-');
