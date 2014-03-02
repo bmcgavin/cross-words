@@ -25,9 +25,11 @@ var inputBind = function(event)
 {
 	//$("div#information").html(//$("div#information").html()+new Date().getTime()+":CALL<br/>");
 	letter = CrosswordData.splitWordAndGetLetter();
+    /*
     if (CrosswordData.concentration) {
         letter = parseInt(letter) + 1000;
     }
+    */
 	if (event.which == 0) {
 		//Uh-oh Android Chrome
 		// https://code.google.com/p/chromium/issues/detail?id=118639
@@ -129,21 +131,25 @@ function concentrate() {
     CrosswordData.concentration = true
 	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
 	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
-    $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind);
+    $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind).removeAttr('id');
+    /*
     $("div#active-word :input").each(function(index, value) {
         triple = value.id.split('-');
         triple[2] = parseInt(triple[2]) + 1000;
         value.id = triple.join("-");
         //$("div#"+value.id).removeAttr('onfocus');
     })
+    */
     $("div#active-word :input").focus(event, function() {
         tmp = event.target.id.split("-")
         highlightWord(tmp[0]+"-"+tmp[1], tmp[2])
     })
     $("div#active-word :input").keyup(inputBind);
+    /*
     triple = CrosswordData.active_letter.split("-");
     triple[2] = parseInt(triple[2]) + 1000;
     CrosswordData.active_letter = triple.join("-")
+    */
     //removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 } 
 
