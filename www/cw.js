@@ -129,7 +129,12 @@ function concentrate() {
     //Concentration mode
     //Get ordered list of words in clue
     if (CrosswordData.concentration) {
-        $("div#" + CrosswordData.active_word).html($("div#active-word").html())
+        $("div#"+CrosswordData.active-word+" :input").each(function(index, value) {
+            tmp = CrosswordData.active-word.split("-")
+            $(value).attr('id', tmp[0]+"-"+tmp[1]+"-"+index)
+            
+        })
+        //$("div#" + CrosswordData.active_word).html($("div#active-word").html())
         CrosswordData.concentration = false
         $("div#active-word").html("")
         return
@@ -275,6 +280,9 @@ function clearAllExcept(exceptions) {
 }
 
 function highlightWord(word, letter) {
+    if (word != CrosswordData.active_word && CrosswordData.concentration) {
+        concentrate()
+    }
 	CrosswordData.active_word=word;
 	////$("div#information").html(//$("div#information").html()+new Date().getTime()+":TOP"+word+"-"+letter+"<br/>");
 	CrosswordData.active_letter = word+"-"+letter;
