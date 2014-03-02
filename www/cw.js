@@ -22,7 +22,7 @@ function store() {
 
 function concentrate() {
     //Remove the board, show a single clue and the layout (and any letters)
-    $("div#crossword").hide();
+    //$("div#crossword").hide();
     //Concentration mode
 	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
     $("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
