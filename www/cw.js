@@ -23,6 +23,9 @@ function store() {
 function concentrate() {
     //Remove the board, show a single clue and the layout (and any letters)
     $("div#crossword").hide();
+    //Concentration mode
+	$("div#active-word").html($("div#" + word).html());
+    $("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 } 
  
 var inputBind = function(event) 
@@ -251,9 +254,6 @@ function highlightWord(word, letter) {
 		clue += $("div#"+currentWord+"-clue").html()+"\n</br>";
 	}
 	$("div#active-clue").html(clue);
-    //Concentration mode
-	//$("div#active-word").html($("div#" + word).html());
-    //$("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 }
 
 function get_letter(which) {
