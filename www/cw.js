@@ -129,8 +129,8 @@ function concentrate() {
     //Concentration mode
     //Get ordered list of words in clue
     if (CrosswordData.concentration) {
-        $("div#"+CrosswordData.active-word+" :input").each(function(index, value) {
-            tmp = CrosswordData.active-word.split("-")
+        $("div#"+CrosswordData.active_word+" :input").each(function(index, value) {
+            tmp = CrosswordData.active_word.split("-")
             $(value).attr('id', tmp[0]+"-"+tmp[1]+"-"+index)
             
         })
