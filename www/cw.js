@@ -2,6 +2,7 @@
 function CrosswordData() {
 	var active_letter;
 	var active_word;
+    var concentration = false;
 	var LEFT;
 	var RIGHT;
 	var UP;
@@ -24,6 +25,9 @@ var inputBind = function(event)
 {
 	//$("div#information").html(//$("div#information").html()+new Date().getTime()+":CALL<br/>");
 	letter = CrosswordData.splitWordAndGetLetter();
+    if (CrosswordData.concentration) {
+        letter = parseInt(letter) + 1000;
+    }
 	if (event.which == 0) {
 		//Uh-oh Android Chrome
 		// https://code.google.com/p/chromium/issues/detail?id=118639
@@ -122,6 +126,7 @@ function concentrate() {
     //$("div#crossword").hide();
     //Concentration mode
     //Get ordered list of words in clue
+    concentration = true
 	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
 	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
     $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind);
