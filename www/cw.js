@@ -145,6 +145,9 @@ function concentrate() {
 	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
 	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
     $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind).removeAttr('id');
+    $("div#" + CrosswordData.active_word + " :input").each(function(index, value) {
+       $("input#"+CrosswordData.active_word+"-"+(index+1)).val(value.value)
+    })
     tmp = CrosswordData.active_word.split("-")
     if (tmp[1] == "down") {
         $("div#active-word :input").removeClass("end-across")
