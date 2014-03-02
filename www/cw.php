@@ -323,7 +323,7 @@ $scripts = <<< EOF
 			tmp = value.id.split("-")
 			num_direction = tmp[0] + "-" + tmp[1]
 			letter = tmp[2]
-			$("#"+value.id).focus(function() {
+			$("#"+value.id).focus(event, function() {
 				console.log("Calling hw " + num_direction + "-" + letter)
 				highlightWord(num_direction, letter)
 			})
