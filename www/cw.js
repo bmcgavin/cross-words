@@ -136,7 +136,8 @@ function concentrate() {
         value.id = triple.join("-");
         //$("div#"+value.id).removeAttr('onfocus');
         $("div#"+value.id).focus(event, function() {
-            highlightWord(triple[0]+"-"+triple[1], triple[2])
+            tmp = event.target.id.split("-")
+            highlightWord(tmp[0]+"-"+tmp[1], tmp[2])
         })
     })
     $("div#active-word :input").keyup(inputBind);
