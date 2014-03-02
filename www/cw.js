@@ -130,6 +130,7 @@ function concentrate() {
         triple[2] = parseInt(triple[2]) + 1000;
         value.id = triple[0] + "-" + triple[1] + "-" + triple[2];
     });
+    $("div#active-word :input").keyup(inputBind);
     //removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 } 
 
