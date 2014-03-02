@@ -126,9 +126,9 @@ function concentrate() {
 	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
     $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind);
     $("div#active-word :input").each(function(index, value) {
-        (number, direction, letter) = value.id.split('-');
-        letter = parseInt(letter) + 1000;
-        value.id = number + "-" + "-" + direction + "-" + letter;
+        triple = value.id.split('-');
+        triple[2] = parseInt(triple[2]) + 1000;
+        value.id = triple[0] + "-" + triple[1] + "-" + triple[2];
     });
     //removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 } 
