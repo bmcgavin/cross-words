@@ -131,7 +131,7 @@ function concentrate() {
     if (CrosswordData.concentration) {
         $("div#"+CrosswordData.active_word+" :input").each(function(index, value) {
             tmp = CrosswordData.active_word.split("-")
-            $(value).attr('id', tmp[0]+"-"+tmp[1]+"-"+index)
+            $(value).attr('id', tmp[0]+"-"+tmp[1]+"-"+parseInt(index)+1)
             
         })
         //$("div#" + CrosswordData.active_word).html($("div#active-word").html())
