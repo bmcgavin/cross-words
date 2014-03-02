@@ -265,7 +265,7 @@ EOF;
 			}
 		}
 		$output .= <<< EOF
-		<input maxlength="1" type="text" id="{$id}" class="{$class}" style="top:{$clue_top}px; left:{$clue_left}px;" onfocus="highlightWord('{$clue}', '{$letter}');"></input>
+		<input maxlength="1" type="text" id="{$id}" class="{$class}" style="top:{$clue_top}px; left:{$clue_left}px;"></input>
 
 EOF;
 		if (array_key_exists('word_boundaries', $data) && in_array($letter, $data['word_boundaries']) && $letter != $length) {
@@ -319,6 +319,12 @@ $scripts = <<< EOF
 	{$words_in_clue}
 	$().ready(function() {
 		$("input").keyup(inputBind);
+		$("input").each(function(index, value) {
+			tmp = value.id.split("-")
+			clue = tmp[0] + "-" + tmp[1]
+			letter = tmp[2]
+			$("#"+value.id).focusin(highlightWord(clue, letter))
+		})
 		CrosswordData.active_letter = "";
 		CrosswordData.active_word = "";
 		CrosswordData.LEFT = 37;
