@@ -321,11 +321,11 @@ $scripts = <<< EOF
 		$("input").keyup(inputBind);
 		$("input").each(function(index, value) {
 			tmp = value.id.split("-")
-			clue = tmp[0] + "-" + tmp[1]
+			num_direction = tmp[0] + "-" + tmp[1]
 			letter = tmp[2]
 			$("#"+value.id).focus(function() {
-				console.log("Calling hw " + clue + "-" + letter)
-				highlightWord(clue, letter)
+				console.log("Calling hw " + num_direction + "-" + letter)
+				highlightWord(num_direction, letter)
 			})
 		})
 		CrosswordData.active_letter = "";
