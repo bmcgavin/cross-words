@@ -27,7 +27,7 @@ function concentrate() {
     //Get ordered list of words in clue
 	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
 	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
-    $("div#" + CrosswordData.active_word + " :input").unbind("keyup");
+    $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind);
     $("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 } 
  
