@@ -130,7 +130,7 @@ function concentrate() {
     //Get ordered list of words in clue
     if (CrosswordData.concentration) {
         $("div#"+CrosswordData.active_word+" :input").each(function(index, value) {
-            //value.value=$("input#"+CrosswordData.active_word+"-"+(index+1)).value()
+            value.value=$("input#"+CrosswordData.active_word+"-"+(index+1)).value()
 
             tmp = CrosswordData.active_word.split("-")
             value.id=tmp[0]+"-"+tmp[1]+"-"+(index+1)
