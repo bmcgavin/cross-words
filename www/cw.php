@@ -84,11 +84,13 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 		$traversed = 0;
         $current_clue = $clue;
         for($position = 0; $position < count($word_lengths); $position++) {
+            $tmp_type = $delimiter_type;
             $word_length = $word_lengths[$position];
             if (!is_numeric($word_length)) {
                 //Other delimiter - insert after current length
                 $still_delimited = preg_split("/-/", $word_length);
                 $word_lengths = array_splice($word_lengths, $position, 0, $still_delimited);
+                $tmp_type = 'hyphen';
             }
 			$traversed += $word_length;
             if ($traversed > $crossword[$current_clue]['length']) {
@@ -111,13 +113,13 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
                 }
 
                 $crossword[$current_clue]['word_boundaries'][] = $traversed;
-                $crossword[$current_clue]['word_boundary_type'][] = $delimiter_type;
+                $crossword[$current_clue]['word_boundary_type'][] = $tmp_type;
                 echo "<!-- $current_clue : " . print_r($crossword[$current_clue], true) . "-->";
 
             }
             if ($clue == $current_clue) {
                 $crossword[$clue]['word_boundaries'][] = $traversed;
-                $crossword[$clue]['word_boundary_type'][] = $delimiter_type;
+                $crossword[$clue]['word_boundary_type'][] = $tmp_type;
             }
 		}
 	}
