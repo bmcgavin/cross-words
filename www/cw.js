@@ -135,10 +135,10 @@ function concentrate() {
         triple[2] = parseInt(triple[2]) + 1000;
         value.id = triple.join("-");
         //$("div#"+value.id).removeAttr('onfocus');
-        $("div#"+value.id).focus(event, function() {
-            tmp = event.target.id.split("-")
-            highlightWord(tmp[0]+"-"+tmp[1], tmp[2])
-        })
+    })
+    $("div#active-word :input").focus(event, function() {
+        tmp = event.target.id.split("-")
+        highlightWord(tmp[0]+"-"+tmp[1], tmp[2])
     })
     $("div#active-word :input").keyup(inputBind);
     triple = CrosswordData.active_letter.split("-");
