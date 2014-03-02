@@ -128,9 +128,12 @@ function concentrate() {
     $("div#active-word :input").each(function(index, value) {
         triple = value.id.split('-');
         triple[2] = parseInt(triple[2]) + 1000;
-        value.id = triple[0] + "-" + triple[1] + "-" + triple[2];
+        value.id = triple.join("-");
     });
     $("div#active-word :input").keyup(inputBind);
+    triple = CrosswordData.active_letter.split("-");
+    triple[2] = parseInt(triple[2]) + 1000;
+    CrosswordData.active_letter = triple.join("-")
     //removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 } 
 
