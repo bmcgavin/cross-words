@@ -324,8 +324,8 @@ $scripts = <<< EOF
 			num_direction = tmp[0] + "-" + tmp[1]
 			letter = tmp[2]
 			$("#"+value.id).focus(event, function() {
-				console.log("Calling hw " + num_direction + "-" + letter)
-				highlightWord(num_direction, letter)
+				tmp = event.target.id.split("-")
+				highlightWord(tmp[0] +"-"+ tmp[1], tmp[2])
 			})
 		})
 		CrosswordData.active_letter = "";
