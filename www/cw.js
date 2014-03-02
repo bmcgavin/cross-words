@@ -24,7 +24,10 @@ function concentrate() {
     //Remove the board, show a single clue and the layout (and any letters)
     //$("div#crossword").hide();
     //Concentration mode
+    //Get ordered list of words in clue
+	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
 	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
+    $("div#" + CrosswordData.active_word + " :input").unbind("keyup");
     $("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 } 
  
@@ -58,10 +61,8 @@ var inputBind = function(event)
 			letter--;
 			CrosswordData.active_letter = moveTo(split_word[0]+"-"+split_word[1]+"-"+(parseInt(letter)), CrosswordData.active_word)
 		} else if (letter == 1 && allWordsInClue.length > 1) {
-			console.log("Old word");
             for (i in allWordsInClue) {
                 if (allWordsInClue[i] == CrosswordData.active_word) {
-                    console.log("Got word : " + i);
                     break;
                 }
             }
