@@ -20,17 +20,6 @@ function store() {
 	
 }
 
-function concentrate() {
-    //Remove the board, show a single clue and the layout (and any letters)
-    //$("div#crossword").hide();
-    //Concentration mode
-    //Get ordered list of words in clue
-	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
-	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
-    $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind);
-    $("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
-} 
- 
 var inputBind = function(event) 
 {
 	//$("div#information").html(//$("div#information").html()+new Date().getTime()+":CALL<br/>");
@@ -127,6 +116,17 @@ function processOne(how) {
 		}
 	}
 }
+
+function concentrate() {
+    //Remove the board, show a single clue and the layout (and any letters)
+    //$("div#crossword").hide();
+    //Concentration mode
+    //Get ordered list of words in clue
+	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
+	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
+    $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind);
+    $("div#active-word :input").removeAttr('id').removeAttr('onfocus').keyup(inputBind);
+} 
 
 function getAllWordsInClue(anyWord) {
 	for (tmp in words_in_clue) {
