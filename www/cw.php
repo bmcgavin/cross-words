@@ -69,7 +69,6 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
             $crossword[$clue]['word_boundaries'] = array();
         }
         //Pure comma / hyphen
-        $mixed = false;
         if (!strstr($word_lengths[1][0],'-')) {
             $word_lengths = preg_split("/,/", $word_lengths[1][0]);
             $delimiter_type = 'comma';
@@ -77,8 +76,6 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
             $word_lengths = preg_split("/-/", $word_lengths[1][0]);
             $delimiter_type = 'hyphen';
         } else {
-            echo "<!-- " . $clue . " is mixed -->";
-            $mixed = true;
             //Split on comma but be prepared for hyphens
             $word_lengths = preg_split("/,/", $word_lengths[1][0]);
             $delimiter_type = 'comma';
@@ -89,18 +86,11 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
         for($position = 0; $position < count($word_lengths); $position++) {
             $tmp_type = $delimiter_type;
             $word_length = $word_lengths[$position];
-            if ($mixed) {
-                echo "<!-- mixed : " . $word_length . "-->";
-            }
             if (!is_numeric($word_length)) {
                 //Other delimiter - insert after current length
                 $still_delimited = preg_split("/-/", $word_length);
                 unset($word_lengths[$position]);
-                echo '<!-- pre : ' . print_r($word_lengths, true) . '-->';
-                echo '<!-- postition : ' . print_r($position, true) . '-->';
-                echo '<!-- still_delimited : ' . print_r($still_delimited, true) . '-->';
                 array_splice($word_lengths, $position, 0, $still_delimited);
-                echo '<!-- post : ' . print_r($word_lengths, true) . '-->';
                 $tmp_type = 'hyphen';
             }
 			$traversed += $word_length;
@@ -125,7 +115,6 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 
                 $crossword[$current_clue]['word_boundaries'][] = $traversed;
                 $crossword[$current_clue]['word_boundary_type'][] = $tmp_type;
-                echo "<!-- $current_clue : " . print_r($crossword[$current_clue], true) . "-->";
 
             }
             if ($clue == $current_clue) {
@@ -136,7 +125,6 @@ for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
 	}
 }
 
-echo '<!-- ' . print_r($crossword, true) . '-->';
 
 for ($indexomatic = 0; $indexomatic < count($clues); $indexomatic++) {
     $clue = $clues[$indexomatic];
