@@ -134,7 +134,7 @@ function concentrate() {
         triple = value.id.split('-');
         triple[2] = parseInt(triple[2]) + 1000;
         value.id = triple.join("-");
-        $("div#"+value.id).removeAttr('onfocus');
+        //$("div#"+value.id).removeAttr('onfocus');
         $("div#"+value.id).focus(function() {
             highlightWord(triple[0]+"-"+triple[1], triple[2])
         })

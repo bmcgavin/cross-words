@@ -323,7 +323,9 @@ $scripts = <<< EOF
 			tmp = value.id.split("-")
 			clue = tmp[0] + "-" + tmp[1]
 			letter = tmp[2]
-			$("#"+value.id).focusin(highlightWord(clue, letter))
+			$("#"+value.id).focus(function() {
+				highlightWord(clue, letter)
+			})
 		})
 		CrosswordData.active_letter = "";
 		CrosswordData.active_word = "";
