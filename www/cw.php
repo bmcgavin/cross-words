@@ -324,6 +324,7 @@ $scripts = <<< EOF
 			clue = tmp[0] + "-" + tmp[1]
 			letter = tmp[2]
 			$("#"+value.id).focus(function() {
+				console.log("Calling hw " + clue + "-" + letter)
 				highlightWord(clue, letter)
 			})
 		})
