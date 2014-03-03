@@ -124,10 +124,9 @@ function processOne(how) {
 }
 
 function concentrate() {
-    //Remove the board, show a single clue and the layout (and any letters)
-    //$("div#crossword").hide();
     //Concentration mode
     //Get ordered list of words in clue
+	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
     if (CrosswordData.concentration) {
         $("div#"+CrosswordData.active_word+" :input").each(function(index, value) {
             value.value=$("input#"+CrosswordData.active_word+"-"+(index+1)).val()
@@ -136,43 +135,31 @@ function concentrate() {
             value.id=tmp[0]+"-"+tmp[1]+"-"+(index+1)
             
         })
-        //$("div#" + CrosswordData.active_word).html($("div#active-word").html())
         CrosswordData.concentration = false
         $("div#active-word").html("")
         return
     }
     CrosswordData.concentration = true
-	allWordsInClue = getAllWordsInClue(CrosswordData.active_word);
-	$("div#active-word").html($("div#" + CrosswordData.active_word).html());
-    $("div#" + CrosswordData.active_word + " :input").unbind("keyup", inputBind).removeAttr('id');
-    $("div#" + CrosswordData.active_word + " :input").each(function(index, value) {
-       $("input#"+CrosswordData.active_word+"-"+(index+1)).val(value.value)
-    })
-    tmp = CrosswordData.active_word.split("-")
-    if (tmp[1] == "down") {
-        $("div#active-word :input").removeClass("end-across")
-    } else if (tmp[1] == "across") {
-        $("div#active-word :input").removeClass("end-down")
+    $("div#active-word").html("");
+    for (index in allWordsInClue) {
+
+        $("div#active-word").html($("div#active-word").html()+$("div#" + allWordsInClue[index]).html());
+        $("div#" + allWordsInClue[index] + " :input").unbind("keyup", inputBind).removeAttr('id');
+        $("div#" + allWordsInClue[index] + " :input").each(function(index, value) {
+           $("input#"+allWordsInClue[index]+"-"+(index+1)).val(value.value)
+        })
+        tmp = allWordsInClue[index].split("-")
+        if (tmp[1] == "down") {
+            $("div#active-word :input").removeClass("end-across")
+        } else if (tmp[1] == "across") {
+            $("div#active-word :input").removeClass("end-down")
+        }
     }
-    /*
-    $("div#active-word :input").each(function(index, value) {
-        triple = value.id.split('-');
-        triple[2] = parseInt(triple[2]) + 1000;
-        value.id = triple.join("-");
-        //$("div#"+value.id).removeAttr('onfocus');
-    })
-    */
     $("div#active-word :input").focus(event, function() {
         tmp = event.target.id.split("-")
         highlightWord(tmp[0]+"-"+tmp[1], tmp[2])
     })
     $("div#active-word :input").keyup(inputBind);
-    /*
-    triple = CrosswordData.active_letter.split("-");
-    triple[2] = parseInt(triple[2]) + 1000;
-    CrosswordData.active_letter = triple.join("-")
-    */
-    //removeAttr('id').removeAttr('onfocus').keyup(inputBind);
 } 
 
 function getAllWordsInClue(anyWord) {
