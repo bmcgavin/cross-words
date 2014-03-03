@@ -124,6 +124,11 @@ function processOne(how) {
 	}
 }
 
+function deconcentrate() {
+    CrosswordData.concentration = false
+    $("div#crossword").show()
+}
+
 function concentrate() {
     //Concentration mode
     //Get ordered list of words in clue

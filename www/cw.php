@@ -381,6 +381,7 @@ $output = <<< EOF
 	<body>
 		<div id="panel" class="right">
 			<div id="buttons">
+				<button id="deconcentrate" name="deconcentrate" value="deconcentrate" onClick="deconcentrate();">De-Concentrate</button>
 				<button id="concentrate" name="concentrate" value="concentrate" onClick="concentrate();">Concentrate</button>
 				<button id="cheat" name="cheat" value="cheat" onClick="processOne('cheat');">Cheat</button>
 				<button id="solution" name="solution" value="solution" onClick="processAll('cheat');">Solution</button>
