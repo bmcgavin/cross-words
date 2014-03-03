@@ -272,9 +272,6 @@ function clearAllExcept(exceptions) {
 }
 
 function highlightWord(word, letter) {
-    if (word != CrosswordData.active_word && CrosswordData.concentration) {
-        concentrate()
-    }
 	CrosswordData.active_word=word;
 	////$("div#information").html(//$("div#information").html()+new Date().getTime()+":TOP"+word+"-"+letter+"<br/>");
 	CrosswordData.active_letter = word+"-"+letter;
