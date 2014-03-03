@@ -138,17 +138,12 @@ function concentrate() {
         })
         CrosswordData.concentration = false
         $("div#active-word").html("")
-        $("div#crossword").width(CrosswordData.width)
-        return
     }
-    CrosswordData.width = $("div#crossword").width()
-    $("div#crossword").width(0)
+    $("div#crossword").hide()
     CrosswordData.concentration = true
     $("div#active-word").html("")
-    up=0
-    left=0
     for (index in allWordsInClue) {
-        //Need to 
+        //Need to displace the active words...
         $("div#active-word").html($("div#active-word").html()+$("div#" + allWordsInClue[index]).html());
         $("div#" + allWordsInClue[index] + " :input").unbind("keyup", inputBind).removeAttr('id');
         $("div#" + allWordsInClue[index] + " :input").each(function(index, value) {
