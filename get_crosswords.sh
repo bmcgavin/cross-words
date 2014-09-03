@@ -21,7 +21,7 @@ for type in simple cryptic
 do
     curl -s "http://www.independent.co.uk/extras/puzzles/crosswords/?crosswordType="$type -o /tmp/crosswordsindy
     datafile=`grep DATAFILE /tmp/crosswordsindy | awk -F= '{print $3}' | awk -F\" '{print $2}'`
-    curl -s "http://www.independant.co.uk/$datafile" -o /tmp/{`basename $datafile`}
+    curl -s "http://www.independant.co.uk/$datafile" -o /tmp/`basename $datafile`
 done
 
 
