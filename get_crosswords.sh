@@ -2,7 +2,7 @@
 
 cd /var/www/crosswords.linuxplicable.org/ini
 
-curl -s http://www.guardian.co.uk/crosswords -o /tmp/crosswords
+curl -s http://www.theguardian.com/crosswords -o /tmp/crosswords
 
 for type in quick cryptic
 do
