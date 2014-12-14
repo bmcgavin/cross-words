@@ -114,13 +114,20 @@ while (false !== ($b = fgetc($fh))) {
     }
     if ($pointer == $clues) {
         if (bin2hex($b) == '04') {
-            //Down
-            $across = false;
-            fread($fh, 9);
+            if (fgetc($fh) == 'D') {
+                //Down
+                $across = false;
+                fread($fh, 8);
+            } else {
+                echo ftell($fh) . PHP_EOL;
+                fseek($fh, -1, SEEK_CUR);
+                echo ftell($fh) . PHP_EOL;
+            }
         }
         echo 'b : ' . hexdec(bin2hex($b)) . PHP_EOL;
-        if (bin2hex($b) == '81') {
-            echo 'skipping three times';
+        if (bin2hex($b) == '8b' 
+         || bin2hex($b) == '81') {
+            if ($debug) echo 'skipping three times';
             fgetc($fh);
             fgetc($fh);
             $b = fgetc($fh);
