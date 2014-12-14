@@ -15,7 +15,11 @@ if (isset($_GET) || isset($argv)) {
 	} else if (array_key_exists('cw', $_GET)) {
 		$test = preg_split('/-/', $_GET['cw']);
 	}
-	if ($test[0] != 'quick' && $test[0] != 'cryptic' && $test[0] != 'hc') {
+    if ($test[0] != 'quick'
+     && $test[0] != 'cryptic'
+     && $test[0] != 'hc'
+     && $test[0] != 'icryptic'
+     && $test[0] != 'isimple') {
 		echo "Bad variable";
 		exit;			
 	} else if ($test[1] != 'latest' && !preg_match("/^[0-9]+$/", $test[1])) {

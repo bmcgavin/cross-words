@@ -21,7 +21,9 @@ for type in simple cryptic
 do
     curl -s "http://www.independent.co.uk/extras/puzzles/crosswords/?crosswordType="$type -o /tmp/crosswordsindy
     datafile=`grep DATAFILE /tmp/crosswordsindy | awk -F= '{print $3}' | awk -F\" '{print $2}'`
-    curl -s "http://www.independent.co.uk/$datafile" -o /tmp/`basename $datafile`
+    file=`basename $datafile`
+    curl -s "http://www.independent.co.uk/$datafile" -o /tmp/$file
+    date=`echo $file | sed 's/[sc]_\(......\)\.bin/\1/'`
     /usr/bin/php /var/www/crosswords/linuxplicable.org/make_indy_ini.php /tmp/`basename $datafile` > /var/www/crossword-repository/indy-$type-`date +%Y%m%d`
 done
 
