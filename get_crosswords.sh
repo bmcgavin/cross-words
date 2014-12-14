@@ -23,8 +23,8 @@ do
     datafile=`grep DATAFILE /tmp/crosswordsindy | awk -F= '{print $3}' | awk -F\" '{print $2}'`
     file=`basename $datafile`
     curl -s "http://www.independent.co.uk/$datafile" -o /tmp/$file
-    date=`echo $file | sed 's/[sc]_\(......\)\.bin/\1/'`
-    /usr/bin/php /var/www/crosswords/linuxplicable.org/make_indy_ini.php /tmp/`basename $datafile` > /var/www/crossword-repository/indy-$type-`date +%Y%m%d`
+    date=`echo $file | sed 's/[sc]_\(..\)\(..\)\(..\)\.bin/\3\2\1/'`
+    /usr/bin/php /var/www/crosswords/linuxplicable.org/make_indy_ini.php /tmp/`basename $datafile` > /var/www/crossword-repository/i$type-$date.ini
 done
 
 

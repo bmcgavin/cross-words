@@ -345,7 +345,7 @@ if (file_exists('../ini/' . $test[0] . '-' . ($test[1] - 1) . '.ini')) {
 }
 if (file_exists('../ini/' . $test[0] . '-' . ($test[1] + 1) . '.ini')) {
     $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 1) . '">Next</a>';
-} else if ($test[0] == 'cryptic' && file_exists('../ini/' . $test[0] . '-' . ($test[1] + 2) . '.ini')) {
+} else if (($test[0] == 'cryptic' || $test[0] == 'icryptic') && file_exists('../ini/' . $test[0] . '-' . ($test[1] + 2) . '.ini')) {
     $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] + 2) . '">Next</a>';
 }
 $output = <<< EOF

@@ -102,9 +102,9 @@ while (false !== ($b = fgetc($fh))) {
         $setterLength = hexdec(bin2hex($b));
         fread($fh, $setterLength+3);
         $b1 = fgetc($fh);
-        echo 'b1 : ' . hexdec(bin2hex($b1)) . PHP_EOL;
+        if ($debug)echo 'b1 : ' . hexdec(bin2hex($b1)) . PHP_EOL;
         if (bin2hex($b1) == '0b') {
-            echo 'skipping three times';
+            if($debug)echo 'skipping three times';
             fgetc($fh);
             fgetc($fh);
             fgetc($fh);
@@ -119,12 +119,12 @@ while (false !== ($b = fgetc($fh))) {
                 $across = false;
                 fread($fh, 8);
             } else {
-                echo ftell($fh) . PHP_EOL;
+                if($debug)echo ftell($fh) . PHP_EOL;
                 fseek($fh, -1, SEEK_CUR);
-                echo ftell($fh) . PHP_EOL;
+                if($debug)echo ftell($fh) . PHP_EOL;
             }
         }
-        echo 'b : ' . hexdec(bin2hex($b)) . PHP_EOL;
+        if($debug)echo 'b : ' . hexdec(bin2hex($b)) . PHP_EOL;
         if (bin2hex($b) == '8b' 
          || bin2hex($b) == '81') {
             if ($debug) echo 'skipping three times';
