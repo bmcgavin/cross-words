@@ -274,7 +274,7 @@ foreach($down as $index=> $pos) {
         'x' => $x,
         'y' => $y,
         'length' => strlen($solution),
-        'clue' => '"' . $pos['clue'] . '"',
+        'clue' => '"' . str_replace('"', '\"', $pos['clue']) . '"',
         'solution' => '"' . $solution . '"'
     );
     if (array_key_exists($index.'-down', $multis)) {
@@ -301,7 +301,7 @@ foreach($across as $index=> $pos) {
         'x' => $x,
         'y' => $y,
         'length' => strlen($solution),
-        'clue' => '"' . $pos['clue'] . '"',
+        'clue' => '"' . str_replace('"', '\"', $pos['clue']) . '"',
         'solution' => '"' . $solution . '"'
     );
     if (array_key_exists($index.'-across', $multis)) {
