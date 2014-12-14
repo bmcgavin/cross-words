@@ -88,22 +88,29 @@ $clue = '';
 $across = true;
 $acrossClues = array();
 $downClues = array();
+$multis = array();
 while (false !== ($b = fgetc($fh))) {
     if ($pointer == $answers) {
         if (bin2hex($b) == '02') {
-            //skip 17
-            fread($fh, 16);
+            //skip 15
+            fread($fh, 15);
             $pointer = $setter;
             continue;
         }
     }
     if ($pointer == $setter) {
-        if (bin2hex($b) == '2e') {
-            //skip 12
-            fread($fh, 12);
-            $pointer = $clues;
-            continue;
+        $setterLength = hexdec(bin2hex($b));
+        fread($fh, $setterLength+3);
+        $b1 = fgetc($fh);
+        echo 'b1 : ' . hexdec(bin2hex($b1)) . PHP_EOL;
+        if (bin2hex($b1) == '0b') {
+            echo 'skipping three times';
+            fgetc($fh);
+            fgetc($fh);
+            fgetc($fh);
         }
+        $pointer = $clues;
+        continue;
     }
     if ($pointer == $clues) {
         if (bin2hex($b) == '04') {
@@ -111,13 +118,31 @@ while (false !== ($b = fgetc($fh))) {
             $across = false;
             fread($fh, 9);
         }
+        echo 'b : ' . hexdec(bin2hex($b)) . PHP_EOL;
+        if (bin2hex($b) == '81') {
+            echo 'skipping three times';
+            fgetc($fh);
+            fgetc($fh);
+            $b = fgetc($fh);
+        }
         $currentClue = array();
         $currentClue['header'] = $b . fgetc($fh);
         $currentClue['numLength'] = fgetc($fh);
         $currentClue['num'] = fread($fh, hexdec(bin2hex($currentClue['numLength'])));
         $currentClue['clueLength'] = fread($fh, 2);
         $currentClue['clue'] = fread($fh, hexdec(bin2hex($currentClue['clueLength'])));
-
+        if (strpos($currentClue['num'], '/') !== false) {
+            $tmp = explode('/', $currentClue['num']);
+            $key = array_shift($tmp);
+            foreach($tmp as $k) {
+                $multis[$k.'-'. (($across) ? 'across' : 'down')] = $key.'-'. (($across) ? 'across' : 'down');
+            }
+        }
+        if ($debug) {
+            foreach($currentClue as $k => $v) {
+                echo $k . '=' . bin2hex($v) . PHP_EOL;
+            }
+        }
         $data[$pointer][] = $currentClue['clue'];
         if ($across) {
             $acrossClues[] = $currentClue['clue'];
@@ -133,15 +158,11 @@ while (false !== ($b = fgetc($fh))) {
 
 $clueTexts = $data[$clues];
 
-if ($debug)echo chunk_split($output[0], $length, PHP_EOL) . PHP_EOL;
 $starts = '';
 foreach(str_split($output[1]) as $c) {
     $starts .= substr(bin2hex($c), 1, 1);
 }
-if ($debug)echo chunk_split($starts, $length, PHP_EOL) . PHP_EOL;
 
-
-if ($debug)echo $data[$answers] . PHP_EOL;
 
 $grid = str_split($output[0], 1);
 $answerChar = str_split($data[$answers], 1);
@@ -150,6 +171,8 @@ foreach($grid as $i => $char) {
         $grid[$i] = array_shift($answerChar);
     }
 }
+
+if ($debug)print_r($multis);
 
 $grid2 = join("", $grid);
 
@@ -169,9 +192,14 @@ foreach($grid as $i => $letter) {
     }
     if ($markers[$i] & 0x01 == 0x01) {
         $found = false;
+        if ($debug)echo "i:$i\n";
+        if ($debug)echo "length:$length\n";
+        if ($debug)echo "i % length - 1:" . $i % ($length - 1) . "\n";
+        if ($debug)echo "grid[i+1]:{$grid[$i+1]}\n";
+        if ($debug)echo "i % length : ". $i % $length . "\n";
         if (array_key_exists($i + 1, $grid)
          && $grid[$i+1] != '#'
-         && (($i % $length > 1 && $grid[$i-1] == '#') || $i % $length == 0)
+         && (($i % $length >= 1 && $grid[$i-1] == '#') || $i % $length == 0)
          && $i % $length != ($length - 1)) {
         //if (($i % ($length - 1) != 0 || $i == 0)
         // && $grid[$i+1] != '#'
@@ -179,16 +207,15 @@ foreach($grid as $i => $letter) {
             $cluePos = array(
                 'x' => $i % $length,
                 'y' => $row,
-                'clue' => array_shift($acrossClues)
             );
+            if (array_key_exists($clue.'-across', $multis)) {
+                $cluePos['clue'] = 'See ' . $multis[$clue.'-across'];
+            } else {
+                $cluePos['clue'] = array_shift($acrossClues);
+            }
             $across[$clue] = $cluePos;
             $found = true;
             if ($debug)echo "Across : ";
-            if ($debug)echo "i:$i\n";
-            if ($debug)echo "length:$length\n";
-            if ($debug)echo "i % length - 1:" . $i % ($length - 1) . "\n";
-            if ($debug)echo "grid[i+1]:{$grid[$i+1]}\n";
-            if ($debug)echo "i % length : ". $i % $length . "\n";
         } else {
             if ($debug)echo "Doesn't think it's an across:\n";
         }
@@ -198,8 +225,12 @@ foreach($grid as $i => $letter) {
             $cluePos = array(
                 'x' => $i % $length,
                 'y' => $row,
-                'clue' => array_shift($downClues)
             );
+            if (array_key_exists($clue.'-down', $multis)) {
+                $cluePos['clue'] = 'See ' . $multis[$clue.'-down'];
+            } else {
+                $cluePos['clue'] = array_shift($downClues);
+            }
             $down[$clue] = $cluePos;
             $found = true;
             if ($debug) echo "Down : ";
@@ -239,6 +270,9 @@ foreach($down as $index=> $pos) {
         'clue' => '"' . $pos['clue'] . '"',
         'solution' => '"' . $solution . '"'
     );
+    if (array_key_exists($index.'-down', $multis)) {
+        $clue['extra'] = $multis[$index.'-down'];
+    }
     $clues[$index.'-down'] = $clue;
 }
 
@@ -263,6 +297,9 @@ foreach($across as $index=> $pos) {
         'clue' => '"' . $pos['clue'] . '"',
         'solution' => '"' . $solution . '"'
     );
+    if (array_key_exists($index.'-across', $multis)) {
+        $clue['extra'] = $multis[$index.'-across'];
+    }
     $clues[$index.'-across'] = $clue;
 }
 
