@@ -340,7 +340,7 @@ if ($test[1] == 'latest') {
 }
 if (file_exists('../ini/' . $test[0] . '-' . ($test[1] - 1) . '.ini')) {
     $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] - 1) . '">Previous</a>';
-} else if ($test[0] == 'cryptic' && file_exists('../ini/' . $test[0] . '-' . ($test[1] - 2) . '.ini')) {
+} else if (($test[0] == 'cryptic' || $test[0] == 'icryptic') && file_exists('../ini/' . $test[0] . '-' . ($test[1] - 2) . '.ini')) {
     $nav .= '&nbsp;<a href="/cw.php?cw=' . $test[0] . '-' . ($test[1] - 2) . '">Previous</a>';
 }
 if (file_exists('../ini/' . $test[0] . '-' . ($test[1] + 1) . '.ini')) {
